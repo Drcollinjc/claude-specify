@@ -1,0 +1,35 @@
+# my-project Development Guidelines
+
+Auto-generated from all feature plans. Last updated: 2026-01-15
+
+## Active Technologies
+- Python 3.12 + FastAPI 0.115+, Pydantic 2.11+ (001-api-foundation)
+- PostgreSQL 16 via asyncpg (001-api-foundation)
+
+## Project Structure
+
+```text
+src/
+tests/
+```
+
+## Commands
+
+cd src && pytest && ruff check .
+
+## Code Style
+
+Python 3.12: Follow standard conventions
+
+## Recent Changes
+- 001-api-foundation: Added Python 3.12 + FastAPI 0.115+, Pydantic 2.11+
+
+<!-- MANUAL ADDITIONS START -->
+
+## Git & GitHub
+
+**Git operations** (commits, branches, merges, diffs, status): Use `git` commands directly via Bash.
+
+**GitHub operations** (PRs, issues, releases): Use `gh` CLI via Bash.
+
+<!-- MANUAL ADDITIONS END -->
