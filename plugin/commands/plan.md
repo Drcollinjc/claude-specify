@@ -36,13 +36,16 @@ You **MUST** consider the user input before proceeding (if not empty).
    - For each dependency → best practices task
    - For each integration → patterns task
 
-2. **Generate and dispatch research agents**:
+2. **Generate and dispatch research agents** using the Task tool with `subagent_type: "Explore"` and `model: "haiku"`:
+   - **Why haiku**: Research subagents retrieve and summarise existing information — they don't make architectural decisions. Haiku is sufficient for information gathering and costs ~10x less than Opus. The implementing agent synthesises the research into decisions using the main model.
 
    ```text
    For each unknown in Technical Context:
      Task: "Research {unknown} for {feature context}"
+       → subagent_type: "Explore", model: "haiku"
    For each technology choice:
      Task: "Find best practices for {tech} in {domain}"
+       → subagent_type: "Explore", model: "haiku"
    ```
 
 3. **Consolidate findings** in `design/research.md` using format:
