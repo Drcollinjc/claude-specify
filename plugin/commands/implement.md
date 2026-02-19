@@ -145,7 +145,9 @@ Execute tasks in dependency order:
 3. Mark as completed: `TaskUpdate` with `status: "completed"`
 4. Check if any dependent tasks are now unblocked
 
-**For parallel groups**: When all tasks in a parallel group are ready (dependencies met), execute them. Use the Task tool to dispatch independent subagents for file-writing tasks on different files. Practical limit: 2-3 concurrent subagents. Wait for all to complete before moving to dependent tasks.
+**For parallel groups**: When all tasks in a parallel group are ready (dependencies met), execute them. Use the Task tool to dispatch independent subagents for file-writing tasks on different files, with `model: "sonnet"`:
+   - **Why sonnet**: File-writing subagents receive structured instructions (what file to create, what content, which patterns to follow). Sonnet handles this reliably at ~5x less cost than Opus. The orchestrating agent handles architectural decisions; subagents execute them.
+   - Practical limit: 2-3 concurrent subagents. Wait for all to complete before moving to dependent tasks.
 
 **At validator gates**:
 
