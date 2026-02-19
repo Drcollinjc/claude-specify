@@ -33,6 +33,18 @@
 1. **Given** [initial state], **When** [action], **Then** [expected outcome]
 2. **Given** [initial state], **When** [action], **Then** [expected outcome]
 
+**User Journey Test** *(executable by validator agent via Playwright MCP)*:
+
+<!--
+  Define the step-by-step user journey that validates this story from the user's perspective.
+  Each step should be an observable browser action with an expected visual/functional result.
+  The validator agent executes these steps using Playwright MCP tools during GATE verification.
+-->
+
+1. Navigate to [URL] → page loads with [expected content]
+2. Click [element] → [expected navigation or state change]
+3. Verify [specific visual/functional outcome]
+
 ---
 
 ### User Story 2 - [Brief Title] (Priority: P2)
@@ -47,6 +59,11 @@
 
 1. **Given** [initial state], **When** [action], **Then** [expected outcome]
 
+**User Journey Test** *(executable by validator agent via Playwright MCP)*:
+
+1. Navigate to [URL] → page loads with [expected content]
+2. [Action] → [expected outcome]
+
 ---
 
 ### User Story 3 - [Brief Title] (Priority: P3)
@@ -60,6 +77,11 @@
 **Acceptance Scenarios**:
 
 1. **Given** [initial state], **When** [action], **Then** [expected outcome]
+
+**User Journey Test** *(executable by validator agent via Playwright MCP)*:
+
+1. Navigate to [URL] → page loads with [expected content]
+2. [Action] → [expected outcome]
 
 ---
 
@@ -113,3 +135,64 @@
 - **SC-002**: [Measurable metric, e.g., "System handles 1000 concurrent users without degradation"]
 - **SC-003**: [User satisfaction metric, e.g., "90% of users successfully complete primary task on first attempt"]
 - **SC-004**: [Business metric, e.g., "Reduce support tickets related to [X] by 50%"]
+
+## Intelligence Eval Requirements *(include only for features with LLM-powered chains)*
+
+<!--
+  CONDITIONAL SECTION: Include this section ONLY when the feature involves LLM calls
+  (text generation, structured extraction, scoring, classification, etc.).
+  Remove this entire section if the feature has no LLM-powered components.
+
+  Purpose: Define what "good intelligence" looks like BEFORE implementation,
+  so the validator can verify output quality alongside engineering correctness.
+-->
+
+### LLM Chain Steps
+
+<!--
+  List each LLM call in the feature's intelligence chain.
+  For each step, classify its output type:
+  - Category A (deterministic-intent): Tight variance expected (e.g., text-to-SQL, entity extraction)
+  - Category B (creative-intent): Wider variance acceptable (e.g., message generation, insight narrative)
+-->
+
+| Step | Input | Output | Category | Variance Tolerance |
+|------|-------|--------|----------|--------------------|
+| [Step 1 name] | [What goes in] | [What comes out] | A or B | [tight/moderate/wide] |
+| [Step 2 name] | [What goes in] | [What comes out] | A or B | [tight/moderate/wide] |
+
+### Eval Rubrics
+
+<!--
+  For each chain step, define what "good" output looks like.
+  These rubrics become the judge criteria during validator gates.
+-->
+
+**[Step 1 name]**:
+- [Quality dimension 1, e.g., "Insights must be specific to the prospect's industry, not generic advice"]
+- [Quality dimension 2, e.g., "Scores must correlate with the attribute data provided"]
+- [Quality dimension 3, e.g., "Rationales must be grounded in input data, no hallucinated claims"]
+
+### Satisfaction Thresholds
+
+<!--
+  Define the quality bars that must be met during validator gates.
+  These are starting points — they will be tuned based on observed eval results.
+-->
+
+| Eval Layer | Threshold | Notes |
+|-----------|-----------|-------|
+| Structural (schema, field presence, value ranges) | 100% pass | Non-negotiable — output must parse correctly |
+| Semantic (rubric satisfaction via judge model) | >= 0.7 | Starting threshold — tune based on results |
+| Consistency (score stability across N runs) | [Define if needed] | Only for Category A outputs or scored fields |
+
+### Fixture Requirements
+
+<!--
+  Describe the minimum test data needed for intelligence evals.
+  Keep it minimal — 2-3 representative scenarios per chain step.
+  Detailed fixture files are created during /implement, not here.
+-->
+
+- [Fixture 1]: [Brief description, e.g., "Active prospect with strong engagement, weak intent — tests score calibration"]
+- [Fixture 2]: [Brief description, e.g., "Edge case with sparse data — tests graceful degradation"]
