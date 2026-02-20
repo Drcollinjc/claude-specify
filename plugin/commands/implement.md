@@ -55,6 +55,10 @@ Read from FEATURE_DIR:
 
 Read the watermark from spec.md metadata.
 
+Check `decisions.md` Gate Decisions for the `Autonomous Execution` flag:
+- **APPROVED**: Proceed through all stories and gates without pausing for human review between stories. The user reviewed the analysis and approved autonomous execution.
+- **MANUAL** (or flag absent): Pause after each user story's gate passes to give the user a progress update and chance to intervene before the next story.
+
 ### Step 5: Project Setup Verification
 
 **REQUIRED**: Verify `CLAUDE.md` exists in the repository root. If missing, warn the user: "CLAUDE.md is missing — this file provides always-loaded project instructions. Run `/specify` to create it, or create it manually." Do NOT proceed without user acknowledgment.

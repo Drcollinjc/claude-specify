@@ -92,6 +92,7 @@ description: "Task list template for feature implementation"
 - [Registration point: e.g., "Register routes in `src/routes.py` at line ~30"]
 - [Test pattern: e.g., "See `tests/test_existing.py` — pytest fixtures with mock service, parametrize for edge cases"]
 - [Related files: e.g., "`src/models/shared.py` may need new fields"]
+- **Exemplar**: [If a previous feature has a closely analogous component, reference it. e.g., "Build this page following `frontend/src/pages/ICPBuilder.tsx` — same layout pattern, service hook, and error handling"]
 
 ### Tasks
 

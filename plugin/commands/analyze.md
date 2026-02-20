@@ -208,11 +208,25 @@ Update `FEATURE_DIR/decisions.md` under Gate Decisions:
 
 Ask the user: "Would you like me to suggest concrete remediation edits for the top N issues?" (Do NOT apply them automatically.)
 
-### 10. Update session-summary.md
+### 10. Autonomous Execution Approval
+
+If the analysis gate is PASS (no CRITICAL issues), ask the user:
+
+> "Analysis gate passed. Would you like to approve autonomous execution? This means `/implement` will proceed through all tasks and validator gates without pausing for human review between stories. You'll see the final report when implementation is complete. (You can still interrupt at any time.)"
+
+If the user approves:
+- Record `Autonomous Execution: APPROVED` in `FEATURE_DIR/decisions.md` under Gate Decisions
+- `/implement` will check for this flag and skip inter-story confirmation prompts
+
+If the user declines or doesn't respond:
+- Record `Autonomous Execution: MANUAL` in `FEATURE_DIR/decisions.md`
+- `/implement` will pause after each story for user review
+
+### 11. Update session-summary.md
 
 Update `FEATURE_DIR/session-summary.md` — mark `/analyze` as `done` in the Pipeline Progress table. Add analysis outcome (PASS/BLOCK) and issue counts to notes column.
 
-### 11. Stage Completion Gate
+### 12. Stage Completion Gate
 
 Before completing, verify this stage's outputs. **All checks must pass — if any fail, fix the gap before proceeding.**
 
