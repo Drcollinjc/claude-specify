@@ -158,6 +158,8 @@ When all tasks for a user story are complete and a GATE_USn task becomes ready:
    - **Why Explore**: The Explore subagent type has structural tool restrictions — it CANNOT use Write, Edit, or Task tools. This is enforced by the platform, not by instruction. This prevents the validator from modifying code or marking its own tasks complete.
    - **Why sonnet**: A different model from the implementing agent provides independent judgment.
    - **No self-validation**: The implementing agent MUST NOT evaluate acceptance criteria itself and mark the gate as passed. Only the validator agent's structured report can close a gate. If dispatch fails, retry — do not fall back to self-validation.
+   **Layer 1 — Engineering Acceptance Criteria**:
+
    - Provide the validator with:
      - The **acceptance criteria** for that user story
      - The **verification steps** from tasks.md — these are the concrete test commands to execute
@@ -166,10 +168,33 @@ When all tasks for a user story are complete and a GATE_USn task becomes ready:
      - **Setup instructions** if needed (e.g., "start server with `python -m uvicorn src.main:app`")
    - Include this instruction in the validator's prompt: **"For each acceptance criterion, execute the verification step provided. Run the test command or call the endpoint. Report PASS or FAIL based on the command output. Include the actual output as evidence."**
    - The validator executes the test plan and reports results. This is the QA model: run the steps, observe the output, report what happened.
-3. Wait for the validator's structured report
-4. **If ALL criteria PASS**:
+
+   **Layer 2 — User Journey Tests** *(if spec.md has User Journey Test steps for this story)*:
+
+   After engineering acceptance criteria pass, provide the validator with the **User Journey Test** steps from spec.md for this user story. These are executable Playwright MCP sequences that validate the story from the user's perspective.
+
+   - Include this instruction in the validator's prompt: **"Now execute the User Journey Test. For each step, use the Playwright MCP tools (browser_navigate, browser_snapshot, browser_click, browser_wait_for, etc.) to perform the action. Report PASS or FAIL for each step with a screenshot or snapshot as evidence. If any step fails, report the expected vs actual outcome."**
+   - The validator uses Playwright MCP tools which are available to the Explore subagent: `browser_navigate`, `browser_snapshot`, `browser_take_screenshot`, `browser_click`, `browser_evaluate`, `browser_wait_for`, `browser_console_messages`, `browser_network_requests`.
+   - User Journey Tests are **additive** to engineering ACs — a story can pass engineering criteria but fail the user journey (e.g., button works via API but is invisible in the UI).
+   - If the spec has no User Journey Test for this story, skip this layer.
+
+   **Layer 3 — Intelligence Evals** *(if spec.md has Intelligence Eval Requirements)*:
+
+   After engineering criteria and user journey pass, run intelligence quality checks for any LLM chain steps exercised by this user story.
+
+   - Read the **Eval Rubrics** and **Satisfaction Thresholds** from spec.md's Intelligence Eval Requirements section.
+   - For each LLM chain step exercised by this story:
+     1. Identify the chain step and its category (A = deterministic-intent, B = creative-intent)
+     2. Execute the feature's LLM chain with a fixture input (from `evals/fixtures/` if available, or a representative input from the user journey)
+     3. Evaluate the output against the rubric dimensions
+     4. Report PASS/FAIL per rubric dimension with the actual output as evidence
+   - Include this instruction in the validator's prompt: **"For each LLM chain step, evaluate the output against the rubric. For Category A (deterministic-intent) steps, verify structural correctness first (schema, field presence, value ranges) — this must be 100%. Then evaluate semantic quality against the rubric dimensions. For Category B (creative-intent) steps, apply rubric dimensions with the defined variance tolerance. Report the satisfaction score and compare against the threshold."**
+   - If `evals/fixtures/` contains fixture files for this feature, use them. If not, construct a representative input from the test data used in the user journey.
+   - Threshold failures are FAIL — the implementing agent must investigate whether the issue is in the prompt, the fixture, or the threshold itself. Record the decision in decisions.md.
+3. Wait for the validator's structured report (covering all applicable layers)
+4. **If ALL layers PASS** (engineering ACs + user journey if present + intelligence evals if present):
    - Mark gate as completed
-   - Record validation evidence in decisions.md under "Validation Evidence" for that story
+   - Record validation evidence in decisions.md under "Validation Evidence" for that story, noting which layers were executed
    - **Per-story learnings checkpoint**: Before proceeding to the next story, record at least one process observation tagged `[USn]` in the decisions.md Learnings section. Scan these domains:
      - **Requirements**: gaps, ambiguities, or contradictions discovered during coding
      - **Process**: steps that were slow, confusing, skipped, or out of order
@@ -249,6 +274,9 @@ When all tasks and gates are complete:
    Implementation complete.
    Tasks: [completed]/[total]
    Validator gates: [passed]/[total]
+   - Engineering ACs: [passed]/[total]
+   - User Journey Tests: [passed]/[applicable] (or "N/A" if no stories had journey tests)
+   - Intelligence Evals: [passed]/[applicable] (or "N/A" if no LLM chain steps)
    Adjustments: [count]
    Issues discovered: [count]
    Learnings captured: [count] ([per-story] + [cross-cutting])
