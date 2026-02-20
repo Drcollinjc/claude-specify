@@ -122,6 +122,8 @@ Focus on high-signal findings. Limit to 50 findings total; aggregate remainder i
 - Non-functional requirements not reflected in tasks (e.g., performance, security)
 - **Acceptance criteria coverage**: Do all user stories have testable ACs? Are all ACs covered by a validator gate in the Dependency Graph?
 - **Validator gate completeness**: Does every user story have a corresponding validator gate? Are ACs observable and independently verifiable?
+- **User Journey Test coverage**: Does every user story have a User Journey Test section with executable Playwright MCP steps? If missing, flag as MEDIUM (validator gates will still run engineering ACs, but user-perspective validation is missing).
+- **Intelligence Eval coverage** (if spec has Intelligence Eval Requirements section): Are eval rubrics defined for each LLM chain step? Are satisfaction thresholds set? Are fixture requirements described? If the spec declares LLM chain steps but lacks rubrics or thresholds, flag as HIGH.
 
 #### F. Inconsistency
 

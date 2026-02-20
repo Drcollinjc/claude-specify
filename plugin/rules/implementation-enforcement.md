@@ -1,7 +1,7 @@
 ---
 description: MANDATORY enforcement rules for the .specify pipeline. These rules survive context compaction and override default agent behaviour. Apply during ALL implementation work.
 ---
-# Implementation Enforcement v1.0.0
+# Implementation Enforcement v1.1.0
 
 ## Purpose
 
@@ -43,16 +43,19 @@ Before writing ANY implementation code, tasks from `tasks.md` MUST be hydrated i
 
 **If tasks are not hydrated, STOP.** The `/implement` command handles this at Steps 7-9. If you're past those steps and tasks aren't hydrated, something went wrong — investigate before proceeding.
 
-### 4. Validator Gates
+### 4. Validator Gates — Three-Layer Validation
 
-At every `GATE_USn` marker in tasks.md, YOU MUST dispatch the validator agent using the Task tool with `subagent_type: "Explore"` and `model: "sonnet"`. The Explore subagent has structural tool restrictions — it cannot Write, Edit, or create Tasks. This is platform-enforced.
+At every `GATE_USn` marker in tasks.md, dispatch a validator agent using `subagent_type: "Explore"` and `model: "sonnet"`. Explore subagents CANNOT Write, Edit, or create Tasks (platform-enforced).
 
-- **NEVER self-validate.** The implementing agent MUST NOT evaluate acceptance criteria and mark gates as passed. Only the validator agent's structured report can close a gate.
-- **NEVER skip gates.** Every user story has a gate. Every gate must be run.
-- The validator receives the **verification steps** from tasks.md and verifies by **executing each step and reporting PASS/FAIL based on command output**.
-- If the validator agent cannot be dispatched, STOP and inform the user. Do NOT fall back to self-validation.
+**NEVER self-validate.** Only the validator agent's structured report can close a gate. If dispatch fails, retry — do NOT fall back to self-validation. **NEVER skip gates.** Exception: skip at `spike` watermark only.
 
-**Exception**: Skip validator gates at `spike` watermark only.
+The validator runs up to three layers, each conditional:
+
+- **Layer 1 — Engineering ACs** *(always)*: Execute verification steps from tasks.md. Run test commands, call endpoints. Report PASS/FAIL with command output as evidence. This MUST pass before Layer 2.
+- **Layer 2 — User Journey Tests** *(if spec.md has User Journey Test for this story)*: Execute Playwright MCP steps from spec.md. Use browser_navigate, browser_snapshot, browser_click, etc. Report PASS/FAIL per step. A story can pass Layer 1 but fail Layer 2 (works via API but broken in UI).
+- **Layer 3 — Intelligence Evals** *(if spec.md has Intelligence Eval Requirements)*: Evaluate LLM chain outputs against rubrics and satisfaction thresholds from spec.md. Category A (deterministic) = 100% structural correctness. Category B (creative) = rubric satisfaction with defined variance tolerance.
+
+All applicable layers MUST pass for a gate to close. Record which layers were executed and their results in decisions.md.
 
 ### 5. Session Artifacts
 
@@ -63,7 +66,24 @@ At every `GATE_USn` marker in tasks.md, YOU MUST dispatch the validator agent us
 - Update `decisions.md` at: implementation start, every gate, every adjustment, completion.
 - Update `session-summary.md` at: implementation completion.
 
-### 6. Decisions Trace
+### 6. Subagent Model Selection
+
+Use the right model for each subagent role — the orchestrating agent stays on the main model (Opus) for architectural decisions:
+
+- **Research subagents** (`subagent_type: "Explore"`, `model: "haiku"`): Information gathering, codebase exploration, summarisation. Haiku is sufficient and ~10x cheaper.
+- **File-writing subagents** (`model: "sonnet"`): Structured file creation from explicit instructions. Sonnet handles this reliably at ~5x cheaper. Limit: 2-3 concurrent.
+- **Validator subagents** (`subagent_type: "Explore"`, `model: "sonnet"`): Independent judgment for gate verification. Sonnet provides sufficient reasoning for evaluation.
+
+### 7. Learnings Checkpoints
+
+Learnings are captured at two mandatory points:
+
+- **Per-story** (at each gate pass): At least one observation tagged `[USn]` covering: requirements gaps, process friction, tooling issues, architecture assumptions, planning sufficiency. If nothing: `[USn] No novel findings`.
+- **Cross-cutting** (at completion): At least one entry tagged `[cross-cutting]` covering the implementation holistically. Same scan domains. If nothing beyond per-story: `[cross-cutting] No novel findings beyond per-story observations.`
+
+Both are written to the Learnings section of decisions.md. This is mandatory — it feeds the retro signal loop.
+
+### 8. Decisions Trace
 
 Record in `FEATURE_DIR/decisions.md` throughout implementation:
 
