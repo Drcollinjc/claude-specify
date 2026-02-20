@@ -149,6 +149,39 @@ Execute tasks in dependency order:
    - **Why sonnet**: File-writing subagents receive structured instructions (what file to create, what content, which patterns to follow). Sonnet handles this reliably at ~5x less cost than Opus. The orchestrating agent handles architectural decisions; subagents execute them.
    - Practical limit: 2-3 concurrent subagents. Wait for all to complete before moving to dependent tasks.
 
+**Worktree isolation** *(optional — for features with 3+ independent stories)*:
+
+When the dependency graph shows entire user stories that can execute in parallel (no shared file dependencies between them), the orchestrating agent MAY dispatch story-level agents to isolated git worktrees. This provides filesystem isolation, independent Docker instances, and prevents state pollution between stories.
+
+**When to use worktrees**:
+- The feature has 3+ user stories AND at least 2 stories have no file-level dependencies on each other
+- The stories edit different files (check the task file paths in the dependency graph)
+- The watermark is NOT `spike` (spikes don't need this overhead)
+
+**Orchestration protocol**:
+1. Complete all sequential/foundational phases first (shared models, seed data, routing) in the main worktree
+2. For parallelisable stories, create worktrees:
+   ```bash
+   ./scripts/worktree.sh create us3-story-name
+   ./scripts/worktree.sh create us4-story-name
+   ```
+3. Dispatch a story agent for each worktree using the Task tool:
+   - Provide the agent with: worktree path, all tasks for that story, the relevant plan/spec context, setup instructions
+   - The story agent works entirely within its worktree directory
+   - Each worktree has its own Docker instance on offset ports (auto-configured by the script)
+4. Wait for all story agents to complete (they report back via Task tool)
+5. Run validator gates per story in each worktree (the validator uses the worktree's running services)
+6. After all stories pass their gates, merge branches sequentially into an integration branch:
+   ```bash
+   git checkout -b integration/<feature-name>
+   git merge wt/us3-story-name   # resolve conflicts if any
+   git merge wt/us4-story-name   # resolve conflicts if any
+   ```
+7. Tear down worktrees: `./scripts/worktree.sh teardown-all`
+8. Continue any remaining phases (integration polish, cross-story tests) on the integration branch
+
+**If merge conflicts arise**: The orchestrating agent resolves them. If conflicts are non-trivial (overlapping logic, not just adjacent lines), investigate which story introduced the conflicting change and resolve with both stories' intent in mind. Record the resolution in decisions.md.
+
 **At validator gates**:
 
 When all tasks for a user story are complete and a GATE_USn task becomes ready:
