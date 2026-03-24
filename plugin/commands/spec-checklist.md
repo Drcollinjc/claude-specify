@@ -38,7 +38,7 @@ You **MUST** consider the user input before proceeding (if not empty).
    - For single quotes in args like "I'm Groot", use escape syntax: e.g 'I'\''m Groot' (or double-quote if possible: "I'm Groot").
 
 2. **Clarify intent (dynamic)**: Derive up to THREE initial contextual clarifying questions (no pre-baked catalog). They MUST:
-   - Be generated from the user's phrasing + extracted signals from spec/plan/tasks
+   - Be generated from the user's phrasing + extracted signals from spec/spec-plan/spec-tasks
    - Only ask about information that materially changes checklist content
    - Be skipped individually if already unambiguous in `$ARGUMENTS`
    - Prefer precision over breadth
@@ -73,7 +73,7 @@ You **MUST** consider the user input before proceeding (if not empty).
    - Derive checklist theme (e.g., security, review, deploy, ux)
    - Consolidate explicit must-have items mentioned by user
    - Map focus selections to category scaffolding
-   - Infer any missing context from spec/plan/tasks (do NOT hallucinate)
+   - Infer any missing context from spec/spec-plan/spec-tasks (do NOT hallucinate)
 
 4. **Product Thesis Awareness**: Load `.specify/memory/product-principles.md` (the product thesis). During checklist generation, perform a **full thesis check** against ALL thesis principles. This is an inline check — thesis principles can inform checklist domains.
 
@@ -101,7 +101,7 @@ You **MUST** consider the user input before proceeding (if not empty).
      - Format: `[domain].md`
      - If file exists, append to existing file
    - Number items sequentially starting from CHK001
-   - Each `/checklist` run creates a NEW file (never overwrites existing checklists)
+   - Each `/spec-checklist` run creates a NEW file (never overwrites existing checklists)
 
    **CORE PRINCIPLE - Test the Requirements, Not the Implementation**:
    Every checklist item MUST evaluate the REQUIREMENTS THEMSELVES for:
@@ -155,7 +155,7 @@ You **MUST** consider the user input before proceeding (if not empty).
    **ITEM STRUCTURE**:
    Each item should follow this pattern:
    - Question format asking about requirement quality
-   - Focus on what's WRITTEN (or not written) in the spec/plan
+   - Focus on what's WRITTEN (or not written) in the spec/spec-plan
    - Include quality dimension in brackets [Completeness/Clarity/Consistency/etc.]
    - Reference spec section `[Spec §X.Y]` when checking existing requirements
    - Use `[Gap]` marker when checking for missing requirements
@@ -227,19 +227,19 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 7. **Structure Reference**: Generate the checklist following the canonical template in `.specify/templates/checklist-template.md` for title, meta section, category headings, and ID formatting. If template is unavailable, use: H1 title, purpose/created meta lines, `##` category sections containing `- [ ] CHK### <requirement item>` lines with globally incrementing IDs starting at CHK001.
 
-8. **Update session-summary.md**: Update `FEATURE_DIR/session-summary.md` — mark `/checklist` as `done` in the Pipeline Progress table. Add checklist filename and item count to notes column.
+8. **Update session-summary.md**: Update `FEATURE_DIR/session-summary.md` — mark `/spec-checklist` as `done` in the Pipeline Progress table. Add checklist filename and item count to notes column.
 
 9. **Stage Completion Gate**: Before reporting, verify this stage's outputs. **All checks must pass — if any fail, fix the gap before proceeding.**
 
    **Artifact checks** (file must exist and be non-empty):
    - [ ] Checklist file created in `FEATURE_DIR/checklists/` with items
-   - [ ] `FEATURE_DIR/session-summary.md` — `/checklist` row updated
+   - [ ] `FEATURE_DIR/session-summary.md` — `/spec-checklist` row updated
 
    **Content checks**:
    - [ ] Checklist has sequentially numbered items (CHK001, CHK002, ...)
    - [ ] All items are questions about requirements quality (not implementation verification)
    - [ ] ≥80% of items have traceability references (`[Spec §X.Y]`, `[Gap]`, `[Ambiguity]`, etc.)
-   - [ ] session-summary.md Pipeline Progress shows `/checklist` as `done`
+   - [ ] session-summary.md Pipeline Progress shows `/spec-checklist` as `done`
 
    If any check fails: **STOP**. Fix the gap. Re-verify. Do not skip.
 
@@ -249,7 +249,7 @@ You **MUST** consider the user input before proceeding (if not empty).
    - Actor/timing
    - Any explicit user-specified must-have items incorporated
 
-**Important**: Each `/checklist` command invocation creates a checklist file using short, descriptive names unless file already exists. This allows:
+**Important**: Each `/spec-checklist` command invocation creates a checklist file using short, descriptive names unless file already exists. This allows:
 
 - Multiple checklists of different types (e.g., `ux.md`, `test.md`, `security.md`)
 - Simple, memorable filenames that indicate checklist purpose

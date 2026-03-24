@@ -28,15 +28,15 @@ PLUGIN_RULES=(
 
 # Plugin commands (installed to .claude/commands/)
 PLUGIN_COMMANDS=(
-    "specify.md"
-    "clarify.md"
-    "architecture.md"
-    "plan.md"
-    "tasks.md"
-    "checklist.md"
-    "analyze.md"
-    "implement.md"
-    "constitution.md"
+    "spec-specify.md"
+    "spec-clarify.md"
+    "spec-architecture.md"
+    "spec-plan.md"
+    "spec-tasks.md"
+    "spec-checklist.md"
+    "spec-analyze.md"
+    "spec-implement.md"
+    "spec-constitution.md"
 )
 
 # Plugin agents (installed to .claude/agents/)
@@ -172,15 +172,15 @@ do_install() {
     log_info ""
     log_info "Installed:"
     log_info "  .specify/           Pipeline config (thesis, constitution, scripts, templates)"
-    log_info "  .claude/commands/   ${cmd_count} pipeline commands (/specify, /plan, /implement, ...)"
+    log_info "  .claude/commands/   ${cmd_count} pipeline commands (/spec-specify, /spec-plan, /spec-implement, ...)"
     log_info "  .claude/agents/     ${agent_count} agent definitions (research, file-writer, validator)"
     log_info "  .claude/rules/      ${rules_count} process-enforcement rules"
     log_info "  specs/              Feature specification directory"
     log_info ""
     log_info "Next steps:"
     log_info "  1. Edit .specify/memory/product-principles.md with your product thesis"
-    log_info "  2. Run /constitution to generate your engineering principles"
-    log_info "  3. Start a feature with /specify"
+    log_info "  2. Run /spec-constitution to generate your engineering principles"
+    log_info "  3. Start a feature with /spec-specify"
 }
 
 #==============================================================================

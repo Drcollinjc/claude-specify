@@ -9,7 +9,7 @@ Verify work meets requirements through systematic validation.
 ## Verification Patterns
 
 ### Infrastructure Verification
-1. Run synthesis/plan command (`cdk synth`, `terraform plan`)
+1. Run synthesis/spec-plan command (`cdk synth`, `terraform plan`)
 2. Parse output for errors or warnings
 3. Extract relevant configuration sections
 4. Compare against expected values
@@ -64,11 +64,11 @@ validation:
 
 ## Gate Protocol Integration
 
-These verification patterns are MANDATORY at validator gates during `/implement`.
+These verification patterns are MANDATORY at validator gates during `/spec-implement`.
 
 **WHEN**: At every `GATE_USn` marker in tasks.md — after all tasks for a user story are complete.
 
-**HOW**: The validator agent handles gate verification. The implementing agent MUST NOT self-validate. See `/implement` Step 10 for the full dispatch and re-dispatch protocol.
+**HOW**: The validator agent handles gate verification. The implementing agent MUST NOT self-validate. See `/spec-implement` Step 10 for the full dispatch and re-dispatch protocol.
 
 **Happy-path requirement**: Each story's gate MUST include at least one happy-path verification step that tests the primary successful flow with valid input data. Gates with only error-case or edge-case verification are incomplete.
 

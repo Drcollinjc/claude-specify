@@ -12,7 +12,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 ## Outline
 
-The text the user typed after `/specify` in the triggering message **is** the feature description. Assume you always have it available in this conversation even if `$ARGUMENTS` appears literally below. Do not ask the user to repeat it unless they provided an empty command.
+The text the user typed after `/spec-specify` in the triggering message **is** the feature description. Assume you always have it available in this conversation even if `$ARGUMENTS` appears literally below. Do not ask the user to repeat it unless they provided an empty command.
 
 ## Phase 1: Watermark Selection
 
@@ -44,7 +44,7 @@ Load `.specify/memory/product-principles.md` (the product thesis). During specif
   - Integrate the flag into the relevant spec section (e.g., add a constraint or out-of-scope note)
 - If no violations: proceed silently (no output for passing checks)
 
-**Key thesis principles to watch during /specify**:
+**Key thesis principles to watch during /spec-specify**:
 - §6 (Intelligence Layer Boundary) — is the feature crossing into execution?
 - §2/§10 (AI as Collaborator / AI Transparency) — do AI features include explanation requirements?
 - §11 (Terminology) — are domain terms consistent with any established glossary?
@@ -62,7 +62,7 @@ This project uses the `.specify` engineering plugin for structured development.
 
 All implementation MUST go through the `.specify` pipeline:
 ```
-/specify → /clarify → [/architecture] → /plan → /tasks → /checklist → /analyze → /implement
+/spec-specify → /spec-clarify → [/spec-architecture] → /spec-plan → /spec-tasks → /spec-checklist → /spec-analyze → /spec-implement
 ```
 
 ## Rules
@@ -71,7 +71,7 @@ See `.claude/rules/` for enforcement rules that apply at all times.
 
 ## Active Technologies
 
-[To be populated by /plan command]
+[To be populated by /spec-plan command]
 
 <!-- MANUAL ADDITIONS START -->
 <!-- MANUAL ADDITIONS END -->
@@ -202,7 +202,7 @@ Given that feature description, do this:
       
       ## Notes
       
-      - Items marked incomplete require spec updates before `/clarify` or `/plan`
+      - Items marked incomplete require spec updates before `/spec-clarify` or `/spec-plan`
       ```
 
    b. **Run Validation Check**: Review the spec against each checklist item:
@@ -258,25 +258,25 @@ Given that feature description, do this:
 
 8. **Update decisions.md**: Record the specify gate decision — watermark rationale, any scope decisions, and clarification outcomes.
 
-9. **Create session-summary.md**: Copy `.specify/templates/session-summary-template.md` to `FEATURE_DIR/session-summary.md`. Fill in metadata (feature name, branch, watermark, date). Mark `/specify` as `done` in the Pipeline Progress table. Leave all other stages as `pending`.
+9. **Create session-summary.md**: Copy `.specify/templates/session-summary-template.md` to `FEATURE_DIR/session-summary.md`. Fill in metadata (feature name, branch, watermark, date). Mark `/spec-specify` as `done` in the Pipeline Progress table. Leave all other stages as `pending`.
 
 10. **Stage Completion Gate**: Before reporting, verify this stage's outputs. **All checks must pass — if any fail, fix the gap before proceeding.**
 
     **Artifact checks** (file must exist and be non-empty):
     - [ ] `FEATURE_DIR/spec.md` — written with feature content (not template placeholders)
-    - [ ] `FEATURE_DIR/decisions.md` — metadata populated, Gate Decisions has `/specify` entry
-    - [ ] `FEATURE_DIR/session-summary.md` — created with metadata, `/specify` marked done
+    - [ ] `FEATURE_DIR/decisions.md` — metadata populated, Gate Decisions has `/spec-specify` entry
+    - [ ] `FEATURE_DIR/session-summary.md` — created with metadata, `/spec-specify` marked done
     - [ ] `FEATURE_DIR/checklists/requirements.md` — created with validation items
 
     **Content checks**:
     - [ ] spec.md contains watermark in metadata section
     - [ ] spec.md has at least one user story with acceptance criteria
-    - [ ] decisions.md Gate Decisions table has at least one row for `/specify`
-    - [ ] session-summary.md Pipeline Progress shows `/specify` as `done`
+    - [ ] decisions.md Gate Decisions table has at least one row for `/spec-specify`
+    - [ ] session-summary.md Pipeline Progress shows `/spec-specify` as `done`
 
     If any check fails: **STOP**. Fix the gap. Re-verify. Do not skip.
 
-11. Report completion with branch name, spec file path, decisions.md path, checklist results, watermark, and readiness for the next phase (`/clarify` or `/plan`).
+11. Report completion with branch name, spec file path, decisions.md path, checklist results, watermark, and readiness for the next phase (`/spec-clarify` or `/spec-plan`).
 
 **NOTE:** The script creates and checks out the new branch and initializes the spec file before writing.
 

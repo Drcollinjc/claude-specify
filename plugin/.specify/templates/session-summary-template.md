@@ -14,14 +14,14 @@ This document is for **Claude reading when resuming work** in a new session. It 
 
 | Stage | Status | Artifacts | Notes |
 |-------|--------|-----------|-------|
-| /specify | {done/pending} | spec.md, decisions.md | |
-| /clarify | {done/skipped} | | |
-| /architecture | {done/skipped} | | |
-| /plan | {done/pending} | plan.md, design/* | |
-| /tasks | {done/pending} | tasks.md | |
-| /checklist | {done/pending} | checklists/* | |
-| /analyze | {done/pending} | | |
-| /implement | {done/pending} | | |
+| /spec-specify | {done/pending} | spec.md, decisions.md | |
+| /spec-clarify | {done/skipped} | | |
+| /spec-architecture | {done/skipped} | | |
+| /spec-plan | {done/pending} | plan.md, design/* | |
+| /spec-tasks | {done/pending} | tasks.md | |
+| /spec-checklist | {done/pending} | checklists/* | |
+| /spec-analyze | {done/pending} | | |
+| /spec-implement | {done/pending} | | |
 
 ---
 
@@ -103,9 +103,9 @@ This document is for **Claude reading when resuming work** in a new session. It 
 ### If Starting New Feature
 
 1. Clear this context
-2. Run `/specify` with feature description
+2. Run `/spec-specify` with feature description
 3. Follow the pipeline: specify → clarify → plan → tasks → checklist → analyze → implement
-4. New session-summary.md is created at `/specify`
+4. New session-summary.md is created at `/spec-specify`
 
 ---
 

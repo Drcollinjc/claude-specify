@@ -38,7 +38,7 @@ Determine which mode to execute based on `$ARGUMENTS`:
 2. Apply the user's changes.
 3. Follow versioning in the constitution's Governance section.
 4. Validate technology-agnosticism: scan for language names, cloud providers, framework references, specific tools. Flag any found.
-5. Validate testability: each principle must have an `/analyze check` section with concrete checks.
+5. Validate testability: each principle must have an `/spec-analyze check` section with concrete checks.
 6. Write updated constitution with sync impact report prepended.
 7. Run consistency propagation (Step 6 below).
 
@@ -74,7 +74,7 @@ After any constitution change, validate dependent artifacts:
 
 1. Read `.specify/templates/plan-template.md` — ensure Constitution Check section aligns with current principles.
 2. Read `.specify/templates/commands/architecture.md` — ensure Constitution Alignment section references current principles.
-3. Read each command file in `.claude/commands/` — verify thesis/constitution loading instructions reference correct file paths and principle names.
+3. Read each command file in `.claude/commands/` — verify thesis/spec-constitution loading instructions reference correct file paths and principle names.
 4. Report any misalignments found (do not auto-fix command files — report for manual review).
 
 ## Step 7: Technology-Agnosticism Validation
@@ -100,6 +100,6 @@ Produce a final summary:
 ## Formatting & Style
 
 - Use Markdown headings exactly as in the existing documents.
-- Each engineering principle must have: derivation line, "What it prevents", MUST statements, "This costs us", `/analyze check`.
+- Each engineering principle must have: derivation line, "What it prevents", MUST statements, "This costs us", `/spec-analyze check`.
 - Product thesis principles must have: description, "This means", "This costs us".
 - Keep sync impact reports as HTML comments at the top of the constitution file.

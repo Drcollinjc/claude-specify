@@ -60,7 +60,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 **Prerequisites:** `design/research.md` complete
 
 1. **Data Model Handling**:
-   - **If `design/data-model-draft.md` exists** (from `/architecture` Phase 2.5):
+   - **If `design/data-model-draft.md` exists** (from `/spec-architecture` Phase 2.5):
      - Copy `design/data-model-draft.md` → `design/data-model.md`
      - Skip data model generation (already validated during architecture phase)
      - Reference validated schemas in contracts
@@ -70,7 +70,7 @@ You **MUST** consider the user input before proceeding (if not empty).
      - Entity name, fields, relationships
      - Validation rules from requirements
      - State transitions if applicable
-     - **Warning**: No validation against actual data sources (consider running `/architecture` first)
+     - **Warning**: No validation against actual data sources (consider running `/spec-architecture` first)
 
 2. **Generate API contracts** from functional requirements:
    - For each user action → endpoint
@@ -92,7 +92,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 4. **Record decisions**: Update `FEATURE_DIR/decisions.md` with planning decisions — technology choices resolved, alternatives rejected, and any gate decisions.
 
-5. **Update session-summary.md**: Update `FEATURE_DIR/session-summary.md` — mark `/plan` as `done` in the Pipeline Progress table. List generated design artifacts in notes column (e.g., "research.md, data-model.md, contracts/status-api.yaml, quickstart.md").
+5. **Update session-summary.md**: Update `FEATURE_DIR/session-summary.md` — mark `/spec-plan` as `done` in the Pipeline Progress table. List generated design artifacts in notes column (e.g., "research.md, data-model.md, contracts/status-api.yaml, quickstart.md").
 
 6. **Stage Completion Gate**: Before reporting, verify this stage's outputs. **All checks must pass — if any fail, fix the gap before proceeding.**
 
@@ -102,14 +102,14 @@ You **MUST** consider the user input before proceeding (if not empty).
    - [ ] `FEATURE_DIR/design/data-model.md` — entities defined (if data involved)
    - [ ] `FEATURE_DIR/design/contracts/` — at least one contract file (if API involved)
    - [ ] `FEATURE_DIR/quickstart.md` — integration scenarios documented
-   - [ ] `FEATURE_DIR/decisions.md` — Gate Decisions has `/plan` entry
-   - [ ] `FEATURE_DIR/session-summary.md` — `/plan` row updated
+   - [ ] `FEATURE_DIR/decisions.md` — Gate Decisions has `/spec-plan` entry
+   - [ ] `FEATURE_DIR/session-summary.md` — `/spec-plan` row updated
 
    **Content checks**:
    - [ ] plan.md Technical Context has no unresolved "NEEDS CLARIFICATION" markers
    - [ ] plan.md Constitution Check section is filled (all principles evaluated)
    - [ ] decisions.md has planning decisions recorded
-   - [ ] session-summary.md Pipeline Progress shows `/plan` as `done`
+   - [ ] session-summary.md Pipeline Progress shows `/spec-plan` as `done`
 
    If any check fails: **STOP**. Fix the gap. Re-verify. Do not skip.
 

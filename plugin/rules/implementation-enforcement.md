@@ -13,23 +13,23 @@ Enforce the `.specify` pipeline protocol. These rules are ALWAYS loaded and surv
 
 ### 1. Command Invocation
 
-Implementation MUST be done via the `/implement` command. Do NOT write implementation code outside of `/implement`.
+Implementation MUST be done via the `/spec-implement` command. Do NOT write implementation code outside of `/spec-implement`.
 
-The `/implement` command contains the full protocol: prerequisites, analysis gate, context loading, task hydration, dependency graph execution, validator gates, decisions trace, and session artifact updates.
+The `/spec-implement` command contains the full protocol: prerequisites, analysis gate, context loading, task hydration, dependency graph execution, validator gates, decisions trace, and session artifact updates.
 
-**If you find yourself writing implementation code without having invoked `/implement`, STOP.** Re-invoke the command. The protocol exists because ad-hoc implementation skips hydration, gates, and tracking — all of which failed in testing.
+**If you find yourself writing implementation code without having invoked `/spec-implement`, STOP.** Re-invoke the command. The protocol exists because ad-hoc implementation skips hydration, gates, and tracking — all of which failed in testing.
 
 ### 2. Pipeline Order
 
 The pipeline stages MUST run in order. Do NOT skip stages:
 
 ```
-/specify → /clarify → [/architecture] → /plan → /tasks → /checklist → /analyze → /implement
+/spec-specify → /spec-clarify → [/spec-architecture] → /spec-plan → /spec-tasks → /spec-checklist → /spec-analyze → /spec-implement
 ```
 
-- `/specify` MUST run before `/plan`
-- `/tasks` MUST run before `/implement`
-- `/analyze` runs automatically at the start of `/implement` — do NOT bypass it
+- `/spec-specify` MUST run before `/spec-plan`
+- `/spec-tasks` MUST run before `/spec-implement`
+- `/spec-analyze` runs automatically at the start of `/spec-implement` — do NOT bypass it
 
 If the user asks to "just implement" without prior stages, warn them that skipping stages increases rework risk. Proceed only with explicit user approval.
 
@@ -41,7 +41,7 @@ Before writing ANY implementation code, tasks from `tasks.md` MUST be hydrated i
 - Set dependencies via TaskUpdate with addBlockedBy
 - Verify hydration: task count matches, no circular deps, gates correctly positioned
 
-**If tasks are not hydrated, STOP.** The `/implement` command handles this at Steps 7-9. If you're past those steps and tasks aren't hydrated, something went wrong — investigate before proceeding.
+**If tasks are not hydrated, STOP.** The `/spec-implement` command handles this at Steps 7-9. If you're past those steps and tasks aren't hydrated, something went wrong — investigate before proceeding.
 
 ### 4. Validator Gates — Three-Layer Validation
 
@@ -61,8 +61,8 @@ All applicable layers MUST pass for a gate to close. Record which layers were ex
 
 `session-summary.md` and `decisions.md` MUST exist in FEATURE_DIR before implementation starts.
 
-- `/specify` creates both artifacts. If they don't exist, earlier pipeline stages were skipped.
-- If missing when `/implement` starts: create them before writing any code.
+- `/spec-specify` creates both artifacts. If they don't exist, earlier pipeline stages were skipped.
+- If missing when `/spec-implement` starts: create them before writing any code.
 - Update `decisions.md` at: implementation start, every gate, every adjustment, completion.
 - Update `session-summary.md` at: implementation completion.
 
@@ -119,4 +119,4 @@ After context compaction, the PreCompact hook has already captured a snapshot to
 - No entries in decisions.md during implementation
 - No session-summary.md in the feature directory
 - Continuing to code after compaction without reading session artifacts
-- "Just coding" without having invoked `/implement`
+- "Just coding" without having invoked `/spec-implement`

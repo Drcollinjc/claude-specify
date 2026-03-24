@@ -10,6 +10,6 @@ Execute the architecture workflow by following ALL instructions in `.specify/tem
 3. Include decision matrices with weighted scoring for all major technology choices
 4. Classify decisions as Type 1 (irreversible) vs Type 2 (reversible)
 5. Stop after generation and report checkpoint status to user
-6. DO NOT proceed to /plan automatically - wait for user approval
+6. DO NOT proceed to /spec-plan automatically - wait for user approval
 
 Pass through any arguments: $ARGUMENTS

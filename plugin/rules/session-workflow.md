@@ -7,9 +7,9 @@ Maintain context continuity across pipeline stages through session summary and d
 
 These rules are non-negotiable. They apply at ALL times during pipeline execution.
 
-1. **Every pipeline stage MUST update its tracking artifacts.** `/specify` creates `session-summary.md` and `decisions.md`. Every subsequent stage updates them. If you complete a stage without updating these artifacts, STOP and fix it before moving on.
+1. **Every pipeline stage MUST update its tracking artifacts.** `/spec-specify` creates `session-summary.md` and `decisions.md`. Every subsequent stage updates them. If you complete a stage without updating these artifacts, STOP and fix it before moving on.
 
-2. **Session artifacts are required for implementation.** If `session-summary.md` or `decisions.md` do not exist when `/implement` starts, earlier stages were skipped. Do NOT proceed — create the artifacts or run the missing stages.
+2. **Session artifacts are required for implementation.** If `session-summary.md` or `decisions.md` do not exist when `/spec-implement` starts, earlier stages were skipped. Do NOT proceed — create the artifacts or run the missing stages.
 
 3. **After context compaction, STOP and recover.** The PreCompact hook has already captured a snapshot to `decisions.md`. Before continuing ANY work: (1) read `session-summary.md`, (2) read the PreCompact snapshot in `decisions.md`, (3) run `TaskList`. Do NOT write code until process state is re-established.
 
@@ -33,14 +33,14 @@ Rules provide **context** — they explain WHY something matters. Commands provi
 
 | Stage | decisions.md | session-summary.md |
 |-------|-------------|-------------------|
-| `/specify` | CREATE — record watermark selection rationale | CREATE — initialize progress table |
-| `/clarify` | Record scope-changing clarifications | Update stage status |
-| `/architecture` | Record architecture decisions (Type 1/2) | Update stage status, list artifacts |
-| `/plan` | Record planning decisions, alternatives rejected | Update stage status, list design artifacts |
-| `/tasks` | Record task generation approach | Update stage status, task count |
-| `/checklist` | Record any requirement quality issues found | Update stage status |
-| `/analyze` | Record analysis gate decision (pass/block) | Update stage status |
-| `/implement` | Record progress, validator evidence, adjustments | Update current task, completion status |
+| `/spec-specify` | CREATE — record watermark selection rationale | CREATE — initialize progress table |
+| `/spec-clarify` | Record scope-changing clarifications | Update stage status |
+| `/spec-architecture` | Record architecture decisions (Type 1/2) | Update stage status, list artifacts |
+| `/spec-plan` | Record planning decisions, alternatives rejected | Update stage status, list design artifacts |
+| `/spec-tasks` | Record task generation approach | Update stage status, task count |
+| `/spec-checklist` | Record any requirement quality issues found | Update stage status |
+| `/spec-analyze` | Record analysis gate decision (pass/block) | Update stage status |
+| `/spec-implement` | Record progress, validator evidence, adjustments | Update current task, completion status |
 
 ## Session Resume Protocol
 
@@ -77,7 +77,7 @@ The PreCompact hook automatically captures a snapshot to `decisions.md` before c
 - No new external service integrations
 - No data migration complexity
 
-### Use Full `/architecture` when ANY are true:
+### Use Full `/spec-architecture` when ANY are true:
 - Introducing new technology stack
 - Irreversible data changes
 - External service integrations
@@ -90,7 +90,7 @@ The PreCompact hook automatically captures a snapshot to `decisions.md` before c
 - **Design subdirectory** (`design/`): research.md, data-model.md, contracts/
 - **Checklists subdirectory** (`checklists/`): requirements.md, api.md, security.md, etc.
 
-The `design/` subdirectory is created by `setup-plan.sh` (during `/plan`) and `create-new-feature.sh` (during `/specify`). All commands reference design artifacts under `design/`.
+The `design/` subdirectory is created by `setup-plan.sh` (during `/spec-plan`) and `create-new-feature.sh` (during `/spec-specify`). All commands reference design artifacts under `design/`.
 
 ## Anti-Patterns
 - Skipping session summary creation at specify stage

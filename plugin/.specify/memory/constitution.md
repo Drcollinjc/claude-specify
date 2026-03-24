@@ -7,7 +7,7 @@ Change Type: MAJOR (Complete rewrite — all technology-specific content removed
 Removed Principles:
   - Principle I: Demo-First Development (dropped — planning discipline, not constitutional; conflicts with watermark system)
   - Principle II: AWS Infrastructure Foundation (dropped — technology-specific, moved to .claude/rules/)
-  - Principle IV: Component Testing Over Test Suites (dropped — superseded by watermark system in /tasks and /implement)
+  - Principle IV: Component Testing Over Test Suites (dropped — superseded by watermark system in /spec-tasks and /spec-implement)
   - Principle VI: Pragmatic Observability (dropped as standalone — folds into Architecture for Change + project-specific rules)
   - Principle VII: Developer Experience & Iteration Velocity (dropped as standalone — folds into Architecture for Change)
 
@@ -30,18 +30,18 @@ Removed Sections:
 Added Sections:
   - Preamble referencing product-principles.md
   - "This costs us" statement on every principle
-  - /analyze check on every principle
+  - /spec-analyze check on every principle
   - Derivation traceability (which thesis principles feed each eng principle)
 
 Templates Requiring Updates:
   ✅ .specify/templates/plan-template.md — Constitution Check section updated for two-document model
   ✅ .specify/templates/commands/architecture.md — Constitution Alignment updated
-  ✅ .claude/commands/constitution.md — Rewritten for two-document model
-  ✅ .claude/commands/specify.md — Thesis awareness added
-  ✅ .claude/commands/clarify.md — Thesis awareness added
-  ✅ .claude/commands/plan.md — Thesis awareness added
-  ✅ .claude/commands/analyze.md — Thesis awareness added
-  ✅ .claude/commands/checklist.md — Thesis awareness added
+  ✅ .claude/commands/spec-constitution.md — Rewritten for two-document model
+  ✅ .claude/commands/spec-specify.md — Thesis awareness added
+  ✅ .claude/commands/spec-clarify.md — Thesis awareness added
+  ✅ .claude/commands/spec-plan.md — Thesis awareness added
+  ✅ .claude/commands/spec-analyze.md — Thesis awareness added
+  ✅ .claude/commands/spec-checklist.md — Thesis awareness added
 
 Rationale for MAJOR version bump:
 Complete structural rewrite. All 7 original principles replaced with 6 technology-agnostic principles derived from product thesis. Two-document governance model adopted. All project-specific content removed. This is backward-incompatible with v4.0.0 — commands referencing old principle names/numbers must be updated.
@@ -62,7 +62,7 @@ The product thesis defines **who** we build for, **why**, and what **values** we
 
 These principles are:
 - **Technology-agnostic**: They apply regardless of language, cloud provider, or framework
-- **Testable**: Each has concrete checks that `/analyze` can evaluate against specs and plans
+- **Testable**: Each has concrete checks that `/spec-analyze` can evaluate against specs and plans
 - **Costly**: Each imposes a real trade-off. If a principle costs nothing, it isn't a real principle
 
 Project-specific technology choices, patterns, and standards belong in `.claude/rules/` and `CLAUDE.md`, not here.
@@ -83,7 +83,7 @@ Project-specific technology choices, patterns, and standards belong in `.claude/
 
 **This costs us**: Every deviation from spec — even ones that seem obviously fine — requires a stop-and-ask. This slows implementation velocity, especially in early stages where specs are still finding their shape. We accept this because the alternative — optimistic validation that defers surprises — erodes trust and compounds rework.
 
-**/analyze check**: No "close enough" language in artifacts. Status reporting uses binary pass/fail. Acceptance criteria are specific and measurable. No unresolved deviations from spec.
+**/spec-analyze check**: No "close enough" language in artifacts. Status reporting uses binary pass/fail. Acceptance criteria are specific and measurable. No unresolved deviations from spec.
 
 ---
 
@@ -101,7 +101,7 @@ Project-specific technology choices, patterns, and standards belong in `.claude/
 
 **This costs us**: Every AI feature takes longer to build because the explanation layer is mandatory, not optional. Some features will feel heavier than they "need" to be. We accept this because retrofitting explainability into a system built without it is orders of magnitude harder than including it from the start.
 
-**/analyze check**: AI features in spec include explanation requirements. No AI output without a reasoning mechanism. Specs describe how users understand the basis for AI recommendations.
+**/spec-analyze check**: AI features in spec include explanation requirements. No AI output without a reasoning mechanism. Specs describe how users understand the basis for AI recommendations.
 
 ---
 
@@ -118,7 +118,7 @@ Project-specific technology choices, patterns, and standards belong in `.claude/
 
 **This costs us**: We leave revenue on the table by refusing to build execution features users would pay for. We depend on integration quality with third-party tools we don't control. We accept this because crossing the boundary dilutes focus and puts us in competition with established execution platforms instead of complementing them.
 
-**/analyze check**: Spec does not describe execution-layer functionality. Integration points use contracts, not direct execution. Features that push to external systems include human-in-the-loop consideration.
+**/spec-analyze check**: Spec does not describe execution-layer functionality. Integration points use contracts, not direct execution. Features that push to external systems include human-in-the-loop consideration.
 
 ---
 
@@ -135,7 +135,7 @@ Project-specific technology choices, patterns, and standards belong in `.claude/
 
 **This costs us**: Early naming decisions carry more weight than feels comfortable. We may sometimes feel locked into a term that isn't perfect. Maintaining terminology consistency requires discipline, especially across AI-generated code. We accept this because terminology drift across a multi-module product creates compounding confusion that is far more expensive to fix later.
 
-**/analyze check**: No terminology drift between spec, plan, and tasks. Consistent entity naming across all artifacts. No unexplained synonyms for the same concept.
+**/spec-analyze check**: No terminology drift between spec, plan, and tasks. Consistent entity naming across all artifacts. No unexplained synonyms for the same concept.
 
 ---
 
@@ -154,7 +154,7 @@ Project-specific technology choices, patterns, and standards belong in `.claude/
 
 **This costs us**: Interface-first design takes longer upfront than diving into implementation. Classifying decisions adds process. The technology selection weighting may rule out tools that are cheaper or more feature-rich but score poorly on developer experience. We accept this because the cost of reversing a deeply coupled architecture or unwinding a technology lock-in dwarfs the upfront investment in changeability.
 
-**/analyze check**: Tech selection criteria documented. Interfaces defined before implementations. Coupling assessed. Migration paths noted for Type 1 decisions. Features include local development workflow.
+**/spec-analyze check**: Tech selection criteria documented. Interfaces defined before implementations. Coupling assessed. Migration paths noted for Type 1 decisions. Features include local development workflow.
 
 ---
 
@@ -172,7 +172,7 @@ Project-specific technology choices, patterns, and standards belong in `.claude/
 
 **This costs us**: Tracking assumptions and capturing learnings takes time that could be spent building. Revisiting past decisions can feel like rework. We accept this because learning compounds — each documented assumption and captured insight makes the next feature faster and the next decision better-informed.
 
-**/analyze check**: Spec documents assumptions. Plan identifies uncertainty zones. Tasks allow for learning capture at story boundaries.
+**/spec-analyze check**: Spec documents assumptions. Plan identifies uncertainty zones. Tasks allow for learning capture at story boundaries.
 
 ## Governance
 
@@ -188,7 +188,7 @@ Amendments require:
 2. Documented rationale for the change (what problem does it solve?)
 3. Version increment following semantic versioning
 4. Sync impact report prepended to this file
-5. Update to all dependent templates and command files via the `/constitution` command
+5. Update to all dependent templates and command files via the `/spec-constitution` command
 
 ### Versioning Policy
 
@@ -205,8 +205,8 @@ More than one new engineering principle per quarter suggests over-constraint. En
 
 ### Compliance
 
-- The `/plan` command MUST include a Constitution Check section evaluating compliance with all principles
-- The `/analyze` command treats constitution violations as CRITICAL findings
-- The `/architecture` command evaluates technology decisions against these principles
+- The `/spec-plan` command MUST include a Constitution Check section evaluating compliance with all principles
+- The `/spec-analyze` command treats constitution violations as CRITICAL findings
+- The `/spec-architecture` command evaluates technology decisions against these principles
 - Deviations from principles MUST be explicitly justified
 - This constitution is subordinate to the product thesis — if a conflict is found, the thesis governs and the constitution is amended

@@ -14,7 +14,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 Goal: Detect and reduce ambiguity or missing decision points in the active feature specification and record the clarifications directly in the spec file.
 
-Note: This clarification workflow is expected to run (and be completed) BEFORE invoking `/plan`. If the user explicitly states they are skipping clarification (e.g., exploratory spike), you may proceed, but must warn that downstream rework risk increases.
+Note: This clarification workflow is expected to run (and be completed) BEFORE invoking `/spec-plan`. If the user explicitly states they are skipping clarification (e.g., exploratory spike), you may proceed, but must warn that downstream rework risk increases.
 
 Execution steps:
 
@@ -22,7 +22,7 @@ Execution steps:
    - `FEATURE_DIR`
    - `FEATURE_SPEC`
    - (Optionally capture `IMPL_PLAN`, `TASKS` for future chained flows.)
-   - If JSON parsing fails, abort and instruct user to re-run `/specify` or verify feature branch environment.
+   - If JSON parsing fails, abort and instruct user to re-run `/spec-specify` or verify feature branch environment.
    - For single quotes in args like "I'm Groot", use escape syntax: e.g 'I'\''m Groot' (or double-quote if possible: "I'm Groot").
 
 2. **Product Thesis Awareness**: Load `.specify/memory/product-principles.md` (the product thesis). During the ambiguity scan, perform a **full thesis check** against ALL thesis principles. This is an inline check — no formal section, but flag any thesis-relevant ambiguities discovered.
@@ -167,19 +167,19 @@ Execution steps:
 
 9. **Update decisions.md**: If any scope-changing clarifications were made, record them in `FEATURE_DIR/decisions.md` under Gate Decisions with rationale.
 
-10. **Update session-summary.md**: Update `FEATURE_DIR/session-summary.md` — mark `/clarify` as `done` (or `skipped` if no clarifications needed) in the Pipeline Progress table. Add count of clarifications made to notes column.
+10. **Update session-summary.md**: Update `FEATURE_DIR/session-summary.md` — mark `/spec-clarify` as `done` (or `skipped` if no clarifications needed) in the Pipeline Progress table. Add count of clarifications made to notes column.
 
 11. **Stage Completion Gate**: Before reporting, verify this stage's outputs. **All checks must pass — if any fail, fix the gap before proceeding.**
 
     **Artifact checks** (file must exist and be non-empty):
     - [ ] `FEATURE_SPEC` — updated with clarifications (or unchanged if none needed)
     - [ ] `FEATURE_DIR/decisions.md` — updated if scope-changing clarifications made
-    - [ ] `FEATURE_DIR/session-summary.md` — `/clarify` row updated
+    - [ ] `FEATURE_DIR/session-summary.md` — `/spec-clarify` row updated
 
     **Content checks**:
     - [ ] If clarifications were made: spec.md `## Clarifications` section exists with session subheading
     - [ ] If clarifications were made: each clarification is integrated into the relevant spec section
-    - [ ] session-summary.md Pipeline Progress shows `/clarify` as `done` or `skipped`
+    - [ ] session-summary.md Pipeline Progress shows `/spec-clarify` as `done` or `skipped`
 
     If any check fails: **STOP**. Fix the gap. Re-verify. Do not skip.
 
@@ -188,13 +188,13 @@ Execution steps:
     - Path to updated spec.
     - Sections touched (list names).
     - Coverage summary table listing each taxonomy category with Status: Resolved (was Partial/Missing and addressed), Deferred (exceeds question quota or better suited for planning), Clear (already sufficient), Outstanding (still Partial/Missing but low impact).
-    - If any Outstanding or Deferred remain, recommend whether to proceed to `/plan` or run `/clarify` again later post-plan.
+    - If any Outstanding or Deferred remain, recommend whether to proceed to `/spec-plan` or run `/spec-clarify` again later post-plan.
     - Suggested next command.
 
 Behavior rules:
 
 - If no meaningful ambiguities found (or all potential questions would be low-impact), respond: "No critical ambiguities detected worth formal clarification." and suggest proceeding.
-- If spec file missing, instruct user to run `/specify` first (do not create a new spec here).
+- If spec file missing, instruct user to run `/spec-specify` first (do not create a new spec here).
 - Never exceed 5 total asked questions (clarification retries for a single question do not count as new questions).
 - Avoid speculative tech stack questions unless the absence blocks functional clarity.
 - Respect user early termination signals ("stop", "done", "proceed").

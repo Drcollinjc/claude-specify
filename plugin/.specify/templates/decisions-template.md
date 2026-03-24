@@ -30,7 +30,7 @@ _Insights captured during implementation._
 ## Implementation Metrics
 
 <!--
-  Structured retro signals — auto-appended during /implement.
+  Structured retro signals — auto-appended during /spec-implement.
   These quantified metrics enable data-driven retrospectives.
 -->
 
@@ -49,7 +49,7 @@ _Insights captured during implementation._
   | Files modified | [count] |
 -->
 
-_Populated during /implement._
+_Populated during /spec-implement._
 
 ### Gate Metrics
 
@@ -67,12 +67,12 @@ _Populated during /implement._
   | Validator turns | [count] |
 -->
 
-_Populated during /implement._
+_Populated during /spec-implement._
 
 ### Feature Summary
 
 <!--
-  Appended at /implement completion. One entry per feature.
+  Appended at /spec-implement completion. One entry per feature.
 
   | Metric | Value |
   |--------|-------|
@@ -85,7 +85,7 @@ _Populated during /implement._
   | Estimated cost | [dollar amount] |
 -->
 
-_Populated at /implement completion._
+_Populated at /spec-implement completion._
 
 ## Issues & Tech Debt
 

@@ -30,7 +30,7 @@ description: "Task list template for feature implementation"
   ============================================================================
   IMPORTANT: The tasks below are SAMPLE TASKS for illustration purposes only.
 
-  The /tasks command MUST replace these with actual tasks based on:
+  The /spec-tasks command MUST replace these with actual tasks based on:
   - User stories from spec.md (with their priorities P1, P2, P3...)
   - Acceptance criteria from spec.md (placed with each story)
   - Feature requirements from plan.md
@@ -48,7 +48,7 @@ description: "Task list template for feature implementation"
 
 ## Phase 0: Implementation Setup
 
-**Purpose**: Verify project infrastructure and hydrate tasks into the native task system. These tasks are executed by the `/implement` command before any code is written.
+**Purpose**: Verify project infrastructure and hydrate tasks into the native task system. These tasks are executed by the `/spec-implement` command before any code is written.
 
 - [ ] T000 Verify project setup (CLAUDE.md exists, .gitignore configured, ignore files present)
 - [ ] TPRE Hydrate all tasks from this file into the native task system (TaskCreate for each task + gate, TaskUpdate for dependencies)
@@ -87,7 +87,7 @@ description: "Task list template for feature implementation"
 2. [Observable action] → [Expected output]
 3. [Observable action with threshold/boundary] → [Expected output]
 
-**Codebase Pointers** (from /tasks exploration):
+**Codebase Pointers** (from /spec-tasks exploration):
 - [Pattern reference: e.g., "Handler pattern: see `src/handlers/existing.py` — class with service injection, method per endpoint"]
 - [Registration point: e.g., "Register routes in `src/routes.py` at line ~30"]
 - [Test pattern: e.g., "See `tests/test_existing.py` — pytest fixtures with mock service, parametrize for edge cases"]
@@ -117,7 +117,7 @@ description: "Task list template for feature implementation"
 1. [Observable action] → [Expected output]
 2. [Observable action] → [Expected output]
 
-**Codebase Pointers** (from /tasks exploration):
+**Codebase Pointers** (from /spec-tasks exploration):
 - [Relevant patterns, files, and notes for this story]
 
 ### Tasks
@@ -140,7 +140,7 @@ description: "Task list template for feature implementation"
 **Acceptance Criteria** (from spec.md):
 1. [Observable action] → [Expected output]
 
-**Codebase Pointers** (from /tasks exploration):
+**Codebase Pointers** (from /spec-tasks exploration):
 - [Relevant patterns, files, and notes for this story]
 
 ### Tasks

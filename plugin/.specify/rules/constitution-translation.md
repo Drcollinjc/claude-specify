@@ -4,7 +4,7 @@
 
 This rule encodes how product thesis principles are translated into engineering constitution principles. It is the bridge between `.specify/memory/product-principles.md` (the org's product thesis) and `.specify/memory/constitution.md` (the engineering constitution).
 
-The `/constitution` command references this mechanism when creating, updating, or syncing the engineering constitution.
+The `/spec-constitution` command references this mechanism when creating, updating, or syncing the engineering constitution.
 
 ## Core Rule
 
@@ -57,7 +57,7 @@ Rules for cost statements:
 
 ### Step 5: Define the Check
 
-How does `/analyze` detect a violation in a spec or plan? If you cannot define a concrete check, the principle is too vague for the engineering constitution. Go back to Step 3 and make it more specific.
+How does `/spec-analyze` detect a violation in a spec or plan? If you cannot define a concrete check, the principle is too vague for the engineering constitution. Go back to Step 3 and make it more specific.
 
 The check must be:
 - Evaluable from spec.md, plan.md, and tasks.md content (no runtime checks)
@@ -93,7 +93,7 @@ Run Steps 2-3 of the translation mechanism. Do the existing engineering principl
 If a new engineering principle is proposed, it must pass all three checks:
 
 1. **Applicable across any project type and tech stack** — A Go team on GCP must be able to follow it. A mobile team must be able to follow it. If it's specific to a language, cloud provider, or framework, it fails.
-2. **Testable by /analyze** — It has at least one MUST statement that can be checked against spec/plan/tasks content. If it can only be verified at runtime or requires subjective judgment, it fails.
+2. **Testable by /spec-analyze** — It has at least one MUST statement that can be checked against spec/spec-plan/spec-tasks content. If it can only be verified at runtime or requires subjective judgment, it fails.
 3. **Not duplicating an existing principle** — If an existing principle could be extended to cover this, extend it rather than creating a new principle.
 
 - **If PASSES all three**: Add as a new engineering principle in `.specify/memory/constitution.md`.
@@ -109,7 +109,7 @@ More than one new engineering principle per quarter suggests over-constraint. En
 
 ## Sync Impact Report Format
 
-When the `/constitution` command runs a sync, it produces a report with this structure:
+When the `/spec-constitution` command runs a sync, it produces a report with this structure:
 
 ```markdown
 ## Sync Impact Report

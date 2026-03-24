@@ -191,7 +191,7 @@
 <!--
   Describe the minimum test data needed for intelligence evals.
   Keep it minimal — 2-3 representative scenarios per chain step.
-  Detailed fixture files are created during /implement, not here.
+  Detailed fixture files are created during /spec-implement, not here.
 -->
 
 - [Fixture 1]: [Brief description, e.g., "Active prospect with strong engagement, weak intent — tests score calibration"]

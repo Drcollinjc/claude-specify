@@ -20,7 +20,7 @@ Run `.specify/scripts/bash/check-prerequisites.sh --json --require-tasks --inclu
 
 If FEATURE_DIR/checklists/ exists:
 - Scan all checklist files for evaluation status
-- `/analyze` should have already evaluated all checklist items (marking `[x]` or `[ ]` based on spec review)
+- `/spec-analyze` should have already evaluated all checklist items (marking `[x]` or `[ ]` based on spec review)
 - Create a status table:
 
   ```text
@@ -31,12 +31,12 @@ If FEATURE_DIR/checklists/ exists:
   ```
 
 - **If any checklist has failed items**: STOP and ask user whether to proceed (failed items indicate spec gaps)
-- **If any checklist has unevaluated items** (all `[ ]`, none `[x]`): the `/analyze` step likely didn't run or didn't evaluate. STOP — instruct user to run `/analyze` first.
+- **If any checklist has unevaluated items** (all `[ ]`, none `[x]`): the `/spec-analyze` step likely didn't run or didn't evaluate. STOP — instruct user to run `/spec-analyze` first.
 - **If all items evaluated and passed**: Proceed automatically
 
 ### Step 3: Mandatory Analyze Gate
 
-Run the `/analyze` skill automatically before any implementation begins.
+Run the `/spec-analyze` skill automatically before any implementation begins.
 
 - If **CRITICAL** issues found: **STOP**. Report issues to user. Do not proceed until resolved.
 - If no CRITICAL issues: Proceed. Record the analysis gate result in FEATURE_DIR/decisions.md under Gate Decisions.
@@ -61,7 +61,7 @@ Check `decisions.md` Gate Decisions for the `Autonomous Execution` flag:
 
 ### Step 5: Project Setup Verification
 
-**REQUIRED**: Verify `CLAUDE.md` exists in the repository root. If missing, warn the user: "CLAUDE.md is missing — this file provides always-loaded project instructions. Run `/specify` to create it, or create it manually." Do NOT proceed without user acknowledgment.
+**REQUIRED**: Verify `CLAUDE.md` exists in the repository root. If missing, warn the user: "CLAUDE.md is missing — this file provides always-loaded project instructions. Run `/spec-specify` to create it, or create it manually." Do NOT proceed without user acknowledgment.
 
 **REQUIRED**: Create/verify ignore files based on actual project setup:
 
@@ -199,7 +199,7 @@ When all tasks for a user story are complete and a GATE_USn task becomes ready:
    - Provide the validator with:
      - The **acceptance criteria** for that user story
      - The **verification steps** from tasks.md — these are the concrete test commands to execute
-     - **Specific test commands** to run for the project (derived from the codebase exploration during `/tasks`)
+     - **Specific test commands** to run for the project (derived from the codebase exploration during `/spec-tasks`)
      - **File paths** for the implementation (so the validator knows what was built)
      - **Setup instructions** if needed (e.g., "start server with `python -m uvicorn src.main:app`")
    - Include this instruction in the validator's prompt: **"For each acceptance criterion, execute the verification step provided. Run the test command or call the endpoint. Report PASS or FAIL based on the command output. Include the actual output as evidence."**
@@ -280,28 +280,28 @@ When all tasks and gates are complete:
    - **Process**: steps that were slow, confusing, skipped, or out of order
    - **Tooling**: scripts, templates, agents, or commands that didn't behave as expected
    - **Architecture**: assumptions from plan.md that proved wrong during implementation
-   - **Planning sufficiency**: Overall, did the planning artifacts give the implementing agent what it needed? What should future /plan or /tasks runs capture that this one didn't?
+   - **Planning sufficiency**: Overall, did the planning artifacts give the implementing agent what it needed? What should future /spec-plan or /spec-tasks runs capture that this one didn't?
    - **Other**: anything notable not covered above
 
    If genuinely nothing new beyond per-story findings: write `[cross-cutting] No novel findings beyond per-story observations.`
 
 3. Record completion summary in decisions.md
 
-4. **Update session-summary.md**: Mark `/implement` as `done` in the Pipeline Progress table. Update Current Execution State section with final task count, completion status, and any open issues.
+4. **Update session-summary.md**: Mark `/spec-implement` as `done` in the Pipeline Progress table. Update Current Execution State section with final task count, completion status, and any open issues.
 
 5. **Stage Completion Gate**: Before reporting, verify this stage's outputs. **All checks must pass — if any fail, fix the gap before proceeding.**
 
    **Artifact checks** (file must exist and be non-empty):
    - [ ] All implementation files created per tasks.md
-   - [ ] `FEATURE_DIR/decisions.md` — has `/implement` gate entries, validation evidence for all stories, and Learnings entries (per-story + cross-cutting)
-   - [ ] `FEATURE_DIR/session-summary.md` — `/implement` row marked done
+   - [ ] `FEATURE_DIR/decisions.md` — has `/spec-implement` gate entries, validation evidence for all stories, and Learnings entries (per-story + cross-cutting)
+   - [ ] `FEATURE_DIR/session-summary.md` — `/spec-implement` row marked done
 
    **Content checks**:
    - [ ] All native Tasks show completed status
    - [ ] Every user story has validation evidence in decisions.md (GATE entries with PASS)
    - [ ] Learnings section has at least one entry per completed user story plus one cross-cutting entry
    - [ ] Issues & Tech Debt table is populated (even if empty — confirm it was reviewed)
-   - [ ] session-summary.md Pipeline Progress shows `/implement` as `done`
+   - [ ] session-summary.md Pipeline Progress shows `/spec-implement` as `done`
 
    If any check fails: **STOP**. Fix the gap. Re-verify. Do not skip.
 
@@ -318,4 +318,4 @@ When all tasks and gates are complete:
    Learnings captured: [count] ([per-story] + [cross-cutting])
    ```
 
-Note: This command assumes a complete task breakdown exists in tasks.md with a dependency graph section. If tasks are incomplete or missing the dependency graph, suggest running `/tasks` first to regenerate the task list.
+Note: This command assumes a complete task breakdown exists in tasks.md with a dependency graph section. If tasks are incomplete or missing the dependency graph, suggest running `/spec-tasks` first to regenerate the task list.

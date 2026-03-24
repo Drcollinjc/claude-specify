@@ -12,7 +12,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 ## Goal
 
-Identify inconsistencies, duplications, ambiguities, and underspecified items across the three core artifacts (`spec.md`, `plan.md`, `tasks.md`) before implementation. This command MUST run only after `/tasks` has successfully produced a complete `tasks.md`.
+Identify inconsistencies, duplications, ambiguities, and underspecified items across the three core artifacts (`spec.md`, `plan.md`, `tasks.md`) before implementation. This command MUST run only after `/spec-tasks` has successfully produced a complete `tasks.md`.
 
 ## Operating Constraints
 
@@ -20,7 +20,7 @@ Identify inconsistencies, duplications, ambiguities, and underspecified items ac
 
 **WRITABLE**: `decisions.md` (for gate recording), `session-summary.md` (for stage tracking), and checklist files in `checklists/` (for evaluation marks).
 
-**Two-Document Authority**: Both the product thesis (`.specify/memory/product-principles.md`) and the engineering constitution (`.specify/memory/constitution.md`) are authoritative within this analysis scope. Engineering constitution conflicts are automatically CRITICAL. Product thesis conflicts are flagged as HIGH (they indicate potential scope or value misalignment). Neither may be diluted, reinterpreted, or silently ignored. If a principle itself needs to change, that must occur via the `/constitution` command outside `/analyze`.
+**Two-Document Authority**: Both the product thesis (`.specify/memory/product-principles.md`) and the engineering constitution (`.specify/memory/constitution.md`) are authoritative within this analysis scope. Engineering constitution conflicts are automatically CRITICAL. Product thesis conflicts are flagged as HIGH (they indicate potential scope or value misalignment). Neither may be diluted, reinterpreted, or silently ignored. If a principle itself needs to change, that must occur via the `/spec-constitution` command outside `/spec-analyze`.
 
 ## Execution Steps
 
@@ -107,7 +107,7 @@ Focus on high-signal findings. Limit to 50 findings total; aggregate remainder i
 
 - Requirements with verbs but missing object or measurable outcome
 - User stories missing acceptance criteria alignment
-- Tasks referencing files or components not defined in spec/plan
+- Tasks referencing files or components not defined in spec/spec-plan
 
 #### D. Constitution & Thesis Alignment
 
@@ -139,14 +139,14 @@ If `FEATURE_DIR/checklists/` exists and contains checklist files:
 1. Load each checklist file
 2. For each unchecked item (`- [ ]`), evaluate it against the spec, plan, and tasks:
    - Read the question (e.g., "Are error handling requirements defined for all API failure modes?")
-   - Check the relevant spec/plan sections for the answer
+   - Check the relevant spec/spec-plan sections for the answer
    - Mark `- [x]` if the requirement IS adequately specified, leave `- [ ]` if it is NOT
 3. Write the evaluated checklist back to the file
 4. Include checklist evaluation results in the analysis report:
    - Per-checklist: total items, passed, failed
    - Failed items feed into the findings table as coverage gaps
 
-This is the "run the unit tests for requirements" step. `/checklist` generates the tests; `/analyze` runs them.
+This is the "run the unit tests for requirements" step. `/spec-checklist` generates the tests; `/spec-analyze` runs them.
 
 ### 5. Severity Assignment
 
@@ -193,9 +193,9 @@ Output a Markdown report (no file writes) with the following structure:
 
 At end of report, output a concise Next Actions block:
 
-- If CRITICAL issues exist: Recommend resolving before `/implement`
+- If CRITICAL issues exist: Recommend resolving before `/spec-implement`
 - If only LOW/MEDIUM: User may proceed, but provide improvement suggestions
-- Provide explicit command suggestions: e.g., "Run `/specify` with refinement", "Run `/plan` to adjust architecture", "Manually edit tasks.md to add coverage for 'performance-metrics'"
+- Provide explicit command suggestions: e.g., "Run `/spec-specify` with refinement", "Run `/spec-plan` to adjust architecture", "Manually edit tasks.md to add coverage for 'performance-metrics'"
 
 ### 8. Record Analysis Gate Decision
 
@@ -212,33 +212,33 @@ Ask the user: "Would you like me to suggest concrete remediation edits for the t
 
 If the analysis gate is PASS (no CRITICAL issues), ask the user:
 
-> "Analysis gate passed. Would you like to approve autonomous execution? This means `/implement` will proceed through all tasks and validator gates without pausing for human review between stories. You'll see the final report when implementation is complete. (You can still interrupt at any time.)"
+> "Analysis gate passed. Would you like to approve autonomous execution? This means `/spec-implement` will proceed through all tasks and validator gates without pausing for human review between stories. You'll see the final report when implementation is complete. (You can still interrupt at any time.)"
 
 If the user approves:
 - Record `Autonomous Execution: APPROVED` in `FEATURE_DIR/decisions.md` under Gate Decisions
-- `/implement` will check for this flag and skip inter-story confirmation prompts
+- `/spec-implement` will check for this flag and skip inter-story confirmation prompts
 
 If the user declines or doesn't respond:
 - Record `Autonomous Execution: MANUAL` in `FEATURE_DIR/decisions.md`
-- `/implement` will pause after each story for user review
+- `/spec-implement` will pause after each story for user review
 
 ### 11. Update session-summary.md
 
-Update `FEATURE_DIR/session-summary.md` — mark `/analyze` as `done` in the Pipeline Progress table. Add analysis outcome (PASS/BLOCK) and issue counts to notes column.
+Update `FEATURE_DIR/session-summary.md` — mark `/spec-analyze` as `done` in the Pipeline Progress table. Add analysis outcome (PASS/BLOCK) and issue counts to notes column.
 
 ### 12. Stage Completion Gate
 
 Before completing, verify this stage's outputs. **All checks must pass — if any fail, fix the gap before proceeding.**
 
 **Artifact checks** (file must exist and be non-empty):
-- [ ] `FEATURE_DIR/decisions.md` — Gate Decisions has `/analyze` entry with outcome
-- [ ] `FEATURE_DIR/session-summary.md` — `/analyze` row updated
+- [ ] `FEATURE_DIR/decisions.md` — Gate Decisions has `/spec-analyze` entry with outcome
+- [ ] `FEATURE_DIR/session-summary.md` — `/spec-analyze` row updated
 - [ ] If checklists exist: all checklist files have been evaluated (no unchecked items that should be checked)
 
 **Content checks**:
 - [ ] Analysis report was output to user (findings table, coverage summary, metrics)
 - [ ] decisions.md gate entry includes PASS/BLOCK and CRITICAL issue count
-- [ ] session-summary.md Pipeline Progress shows `/analyze` as `done`
+- [ ] session-summary.md Pipeline Progress shows `/spec-analyze` as `done`
 
 If any check fails: **STOP**. Fix the gap. Re-verify. Do not skip.
 

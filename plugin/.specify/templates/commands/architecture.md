@@ -345,7 +345,7 @@ If critical validation failures found, prompt user:
 Option A: Fix issues in architecture.md before proceeding ✅
   - Update data-model-draft.md with corrections
   - Re-run validation checks
-  - Proceed to /plan when ✅ GREEN
+  - Proceed to /spec-plan when ✅ GREEN
 
 Option B: Acknowledge and proceed (NOT RECOMMENDED)
   - Implementation will fail when loading actual data
@@ -354,7 +354,7 @@ Option B: Acknowledge and proceed (NOT RECOMMENDED)
 Option C: Regenerate from actual sources automatically
   - Discard spec-based data-model.md
   - Generate fresh from discovered schemas
-  - Proceed to /plan with validated models
+  - Proceed to /spec-plan with validated models
 
 Choose option (A/B/C):
 ```
@@ -370,7 +370,7 @@ If only warnings found, prompt:
 
 Address warnings now? (y/n):
 - y: Incorporate recommendations into architecture.md
-- n: Document as known tech debt, proceed to /plan
+- n: Document as known tech debt, proceed to /spec-plan
 ```
 
 #### Step 6: Generate data-model-draft.md
@@ -519,7 +519,7 @@ Questions that need clarification before proceeding to detailed planning:
 ## Recommended Next Steps
 
 ### If Architecture Approved ✅
-Run `/plan` to generate:
+Run `/spec-plan` to generate:
 - Detailed technical design (plan.md)
 - Research documentation (research.md)
 - Data models (data-model.md)
@@ -531,7 +531,7 @@ The planning phase will **reference decisions from this architecture.md** to avo
 ### If Changes Needed ⚠️
 1. Provide feedback on specific decisions that need revision
 2. Update spec.md if requirements changed
-3. Re-run `/architecture` with updated context
+3. Re-run `/spec-architecture` with updated context
 
 ### If Approach Rejected ❌
 Revisit feature specification (spec.md) to clarify:
@@ -548,7 +548,7 @@ Revisit feature specification (spec.md) to clarify:
 Record architecture decisions (Type 1 and Type 2) in `FEATURE_DIR/decisions.md` under Gate Decisions with rationale and alternatives rejected.
 
 ### Update session-summary.md
-Update `FEATURE_DIR/session-summary.md` — mark `/architecture` as `done` in the Pipeline Progress table. List key decisions and their types in notes column.
+Update `FEATURE_DIR/session-summary.md` — mark `/spec-architecture` as `done` in the Pipeline Progress table. List key decisions and their types in notes column.
 
 ### Stage Completion Gate
 
@@ -556,14 +556,14 @@ Before reporting, verify this stage's outputs. **All checks must pass — if any
 
 **Artifact checks** (file must exist and be non-empty):
 - [ ] `FEATURE_DIR/architecture.md` — generated with decision matrices
-- [ ] `FEATURE_DIR/decisions.md` — Gate Decisions has `/architecture` entry
-- [ ] `FEATURE_DIR/session-summary.md` — `/architecture` row updated
+- [ ] `FEATURE_DIR/decisions.md` — Gate Decisions has `/spec-architecture` entry
+- [ ] `FEATURE_DIR/session-summary.md` — `/spec-architecture` row updated
 
 **Content checks**:
 - [ ] architecture.md has at least one technology decision matrix
 - [ ] All Type 1 decisions are explicitly flagged
 - [ ] Constitution alignment check is completed
-- [ ] session-summary.md Pipeline Progress shows `/architecture` as `done`
+- [ ] session-summary.md Pipeline Progress shows `/spec-architecture` as `done`
 
 If any check fails: **STOP**. Fix the gap. Re-verify. Do not skip.
 
@@ -589,7 +589,7 @@ After generating architecture.md, output:
 
 Please review architecture.md and choose:
 
-1. ✅ **Approve architecture** → Run `/plan` to proceed with detailed design
+1. ✅ **Approve architecture** → Run `/spec-plan` to proceed with detailed design
 2. ⚠️ **Request changes** → Provide feedback, will regenerate with updates
 3. ❌ **Reject approach** → Revisit feature specification (spec.md)
 
@@ -606,7 +606,7 @@ Questions? Open issues in architecture.md "Open Questions" section need answers 
 - **Type 1 vs Type 2**: Explicitly classify decision reversibility
 - **Constitution-aligned**: Map every decision to constitution principles
 - **Enable informed decisions**: User should understand consequences before approving
-- **No implementation**: Save detailed design for /plan phase
+- **No implementation**: Save detailed design for /spec-plan phase
 
 ---
 
@@ -644,7 +644,7 @@ Questions? Open issues in architecture.md "Open Questions" section need answers 
 
 ## When NOT to Use This Command
 
-Skip `/architecture` for:
+Skip `/spec-architecture` for:
 - Simple features with obvious technology choices
 - Features using only existing technologies in codebase
 - Infrastructure changes with no new technology decisions

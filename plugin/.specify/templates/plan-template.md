@@ -5,7 +5,7 @@
 **Input**: Feature specification from `/specs/[###-feature-name]/spec.md`
 **Decisions**: `/specs/[###-feature-name]/decisions.md`
 
-**Note**: This template is filled in by the `/plan` command.
+**Note**: This template is filled in by the `/spec-plan` command.
 
 ## Summary
 
@@ -67,17 +67,17 @@
 
 ```text
 specs/[###-feature]/
-├── spec.md              # Feature specification (/specify command output)
-├── decisions.md         # Decision trace (/specify creates, all stages update)
-├── plan.md              # This file (/plan command output)
-├── quickstart.md        # Phase 1 output (/plan command)
+├── spec.md              # Feature specification (/spec-specify command output)
+├── decisions.md         # Decision trace (/spec-specify creates, all stages update)
+├── plan.md              # This file (/spec-plan command output)
+├── quickstart.md        # Phase 1 output (/spec-plan command)
 ├── session-summary.md   # AI-facing operational log
 ├── design/              # Design artifacts subdirectory
-│   ├── research.md      # Phase 0 output (/plan command)
-│   ├── data-model.md    # Phase 1 output (/plan command)
-│   └── contracts/       # Phase 1 output (/plan command)
-├── checklists/          # Requirement quality checklists (/checklist command)
-└── tasks.md             # Task breakdown (/tasks command - NOT created by /plan)
+│   ├── research.md      # Phase 0 output (/spec-plan command)
+│   ├── data-model.md    # Phase 1 output (/spec-plan command)
+│   └── contracts/       # Phase 1 output (/spec-plan command)
+├── checklists/          # Requirement quality checklists (/spec-checklist command)
+└── tasks.md             # Task breakdown (/spec-tasks command - NOT created by /spec-plan)
 ```
 
 ### Source Code (repository root)

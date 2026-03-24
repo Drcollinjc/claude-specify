@@ -98,14 +98,14 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 9. **Update decisions.md**: Record the task generation approach and any decisions made (e.g., task ordering rationale, which tasks were included/excluded based on watermark, codebase exploration findings).
 
-10. **Update session-summary.md**: Update `FEATURE_DIR/session-summary.md` — mark `/tasks` as `done` in the Pipeline Progress table. Add task count and validator gate count to notes column.
+10. **Update session-summary.md**: Update `FEATURE_DIR/session-summary.md` — mark `/spec-tasks` as `done` in the Pipeline Progress table. Add task count and validator gate count to notes column.
 
 11. **Stage Completion Gate**: Before reporting, verify this stage's outputs. **All checks must pass — if any fail, fix the gap before proceeding.**
 
     **Artifact checks** (file must exist and be non-empty):
     - [ ] `FEATURE_DIR/tasks.md` — generated with task list
-    - [ ] `FEATURE_DIR/decisions.md` — Gate Decisions has `/tasks` entry
-    - [ ] `FEATURE_DIR/session-summary.md` — `/tasks` row updated
+    - [ ] `FEATURE_DIR/decisions.md` — Gate Decisions has `/spec-tasks` entry
+    - [ ] `FEATURE_DIR/session-summary.md` — `/spec-tasks` row updated
 
     **Content checks**:
     - [ ] tasks.md has `## Dependency Graph` section with phase deps, task deps, and parallel groups
@@ -114,7 +114,7 @@ You **MUST** consider the user input before proceeding (if not empty).
     - [ ] Every user story (except spike watermark) has a validator gate marker with verification steps
     - [ ] No parallel groups contain tasks targeting the same file (for each GROUP_N in the Dependency Graph, extract file paths from task descriptions — if any path appears in more than one task in the group, collapse those tasks into a single task or remove from the parallel group)
     - [ ] All task IDs are sequential and unique
-    - [ ] session-summary.md Pipeline Progress shows `/tasks` as `done`
+    - [ ] session-summary.md Pipeline Progress shows `/spec-tasks` as `done`
 
     If any check fails: **STOP**. Fix the gap. Re-verify. Do not skip.
 
@@ -190,7 +190,7 @@ Each verification step specifies: which AC it tests, what command to run, and wh
 Each user story phase MUST include a **Codebase Pointers** section after the acceptance criteria. These come from the exploration step (Step 5) and give the implementing agent the "look here, check this" context:
 
 ```markdown
-**Codebase Pointers** (from /tasks exploration):
+**Codebase Pointers** (from /spec-tasks exploration):
 - Handler pattern: see `src/handlers/[existing_handler]` — [describe the pattern: class/struct structure, method signatures, error handling approach]
 - Registration: new components registered in `src/[config_or_routes_file]` at [location hint]
 - Test pattern: see `tests/[existing_test_file]` — [describe the pattern: fixtures, mocks, assertion style]
