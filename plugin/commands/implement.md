@@ -134,7 +134,7 @@ Before execution begins, verify hydration correctness:
 - Task count matches tasks.md (implementation tasks + gate tasks)
 - No circular dependencies in the graph
 - Validator gates are correctly positioned (blocked by all story tasks, blocking next story)
-- Parallel groups target distinct files (parse file paths from task descriptions)
+- Parallel groups target distinct files: for each parallel group, parse file paths from task descriptions. If two or more tasks in a group share a file path, **STOP** and report the collision. Either collapse the tasks into a single task (with a checklist) or remove the colliding task from the parallel group before proceeding.
 
 If verification fails: **STOP**. Report the discrepancy. Do not proceed.
 
@@ -149,8 +149,8 @@ Execute tasks in dependency order:
 3. Mark as completed: `TaskUpdate` with `status: "completed"`
 4. Check if any dependent tasks are now unblocked
 
-**For parallel groups**: When all tasks in a parallel group are ready (dependencies met), execute them. Use the Task tool to dispatch independent subagents for file-writing tasks on different files, with `model: "sonnet"`:
-   - **Why sonnet**: File-writing subagents receive structured instructions (what file to create, what content, which patterns to follow). Sonnet handles this reliably at ~5x less cost than Opus. The orchestrating agent handles architectural decisions; subagents execute them.
+**For parallel groups**: When all tasks in a parallel group are ready (dependencies met), execute them. Use the Agent tool to dispatch independent subagents referencing `agents/file-writer.md` for file-writing tasks on different files:
+   - The file-writer agent definition enforces: model (sonnet), tool restrictions (no TaskCreate/Update), and turn limit (30) via platform frontmatter.
    - Practical limit: 2-3 concurrent subagents. Wait for all to complete before moving to dependent tasks.
 
 **Worktree isolation** *(optional — for features with 3+ independent stories)*:
@@ -191,9 +191,8 @@ When the dependency graph shows entire user stories that can execute in parallel
 When all tasks for a user story are complete and a GATE_USn task becomes ready:
 
 1. Mark gate as in_progress
-2. Dispatch the **validator agent** using the Task tool with `subagent_type: "Explore"` and `model: "sonnet"`:
-   - **Why Explore**: The Explore subagent type has structural tool restrictions — it CANNOT use Write, Edit, or Task tools. This is enforced by the platform, not by instruction. This prevents the validator from modifying code or marking its own tasks complete.
-   - **Why sonnet**: A different model from the implementing agent provides independent judgment.
+2. Dispatch the **validator agent** using the Agent tool referencing `agents/validator.md`:
+   - The validator agent definition enforces: model (sonnet), tool restrictions (no Write/Edit/NotebookEdit/TaskCreate/TaskUpdate), and turn limit (25) via platform frontmatter.
    - **No self-validation**: The implementing agent MUST NOT evaluate acceptance criteria itself and mark the gate as passed. Only the validator agent's structured report can close a gate. If dispatch fails, retry — do not fall back to self-validation.
    **Layer 1 — Engineering Acceptance Criteria**:
 

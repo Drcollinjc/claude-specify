@@ -70,6 +70,8 @@ These verification patterns are MANDATORY at validator gates during `/implement`
 
 **HOW**: The validator agent handles gate verification. The implementing agent MUST NOT self-validate. See `/implement` Step 10 for the full dispatch and re-dispatch protocol.
 
+**Happy-path requirement**: Each story's gate MUST include at least one happy-path verification step that tests the primary successful flow with valid input data. Gates with only error-case or edge-case verification are incomplete.
+
 **Binary outcome**: Gates produce PASS or FAIL. There is no "partial pass." If any acceptance criterion fails, the gate fails. Record the outcome in `decisions.md`.
 
 These verification patterns also apply to:

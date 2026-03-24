@@ -34,6 +34,8 @@ You **MUST** consider the user input before proceeding (if not empty).
    - Independently verifiable
    - Include threshold/boundary where applicable
 
+   **Happy-path requirement**: At least one AC per story MUST test the primary successful flow (not just edge cases or error handling). If all extracted ACs are edge cases, derive a happy-path AC from the story's goal and flag it as `[derived]`.
+
    Place these ACs directly under each user story heading in the generated tasks.md.
 
 5. **Explore target codebase** (the lead engineer step):
@@ -110,7 +112,7 @@ You **MUST** consider the user input before proceeding (if not empty).
     - [ ] Every user story phase has acceptance criteria from spec.md
     - [ ] Every user story phase has codebase pointers from exploration step
     - [ ] Every user story (except spike watermark) has a validator gate marker with verification steps
-    - [ ] No parallel groups contain tasks targeting the same file
+    - [ ] No parallel groups contain tasks targeting the same file (for each GROUP_N in the Dependency Graph, extract file paths from task descriptions — if any path appears in more than one task in the group, collapse those tasks into a single task or remove from the parallel group)
     - [ ] All task IDs are sequential and unique
     - [ ] session-summary.md Pipeline Progress shows `/tasks` as `done`
 

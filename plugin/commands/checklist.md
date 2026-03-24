@@ -128,6 +128,7 @@ You **MUST** consider the user input before proceeding (if not empty).
    2. **Expected output** — Does the AC specify what should happen? (response code, UI state, data value, status message)
    3. **Independently verifiable** — Can this AC be verified on its own without bundling with other checks? (no "and also check X")
    4. **Threshold/boundary** — Where applicable, does the AC include measurable thresholds? (e.g., "win rate > 40% triggers suggestion", "response < 200ms")
+   5. **Happy-path coverage** — Does at least one AC for this story test the primary successful flow (not just edge cases or error handling)?
 
    Generate checklist items that test whether each AC in the spec meets these rules:
    - "Does AC [N] specify an observable action (API call, UI interaction, data query)? [AC Quality]"

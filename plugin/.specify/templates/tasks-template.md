@@ -83,7 +83,7 @@ description: "Task list template for feature implementation"
 **Goal**: [Brief description of what this story delivers]
 
 **Acceptance Criteria** (from spec.md):
-1. [Observable action] → [Expected output]
+1. [Observable action] → [Expected output]  ← at least one must be a happy-path test (primary successful flow)
 2. [Observable action] → [Expected output]
 3. [Observable action with threshold/boundary] → [Expected output]
 

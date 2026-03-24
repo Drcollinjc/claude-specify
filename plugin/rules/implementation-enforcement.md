@@ -45,7 +45,7 @@ Before writing ANY implementation code, tasks from `tasks.md` MUST be hydrated i
 
 ### 4. Validator Gates — Three-Layer Validation
 
-At every `GATE_USn` marker in tasks.md, dispatch a validator agent using `subagent_type: "Explore"` and `model: "sonnet"`. Explore subagents CANNOT Write, Edit, or create Tasks (platform-enforced).
+At every `GATE_USn` marker in tasks.md, dispatch a validator agent referencing `agents/validator.md`. The agent definition enforces model (sonnet), tool restrictions (no Write/Edit/NotebookEdit/TaskCreate/TaskUpdate), and turn limit (25) via platform frontmatter.
 
 **NEVER self-validate.** Only the validator agent's structured report can close a gate. If dispatch fails, retry — do NOT fall back to self-validation. **NEVER skip gates.** Exception: skip at `spike` watermark only.
 
@@ -68,11 +68,13 @@ All applicable layers MUST pass for a gate to close. Record which layers were ex
 
 ### 6. Subagent Model Selection
 
-Use the right model for each subagent role — the orchestrating agent stays on the main model (Opus) for architectural decisions:
+Use agent definitions from `.claude/agents/` — the orchestrating agent stays on the main model (Opus) for architectural decisions:
 
-- **Research subagents** (`subagent_type: "Explore"`, `model: "haiku"`): Information gathering, codebase exploration, summarisation. Haiku is sufficient and ~10x cheaper.
-- **File-writing subagents** (`model: "sonnet"`): Structured file creation from explicit instructions. Sonnet handles this reliably at ~5x cheaper. Limit: 2-3 concurrent.
-- **Validator subagents** (`subagent_type: "Explore"`, `model: "sonnet"`): Independent judgment for gate verification. Sonnet provides sufficient reasoning for evaluation.
+- **Research**: Use `agents/research.md` (haiku, maxTurns: 15, no Write/Edit/Task). Information gathering, codebase exploration, summarisation. ~10x cheaper than Opus.
+- **File-writing**: Use `agents/file-writer.md` (sonnet, maxTurns: 30, no TaskCreate/Update). Structured file creation from explicit instructions. Limit: 2-3 concurrent.
+- **Validator**: Use `agents/validator.md` (sonnet, maxTurns: 25, no Write/Edit/Task). Independent judgment for gate verification. Three-layer validation protocol.
+
+These agent definitions enforce model selection and tool restrictions via platform frontmatter. The orchestrating agent dispatches them by name — do NOT override model or tool settings inline.
 
 ### 7. Learnings Checkpoints
 

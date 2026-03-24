@@ -39,6 +39,13 @@ PLUGIN_COMMANDS=(
     "constitution.md"
 )
 
+# Plugin agents (installed to .claude/agents/)
+PLUGIN_AGENTS=(
+    "research.md"
+    "file-writer.md"
+    "validator.md"
+)
+
 #==============================================================================
 # Helpers
 #==============================================================================
@@ -133,15 +140,28 @@ do_install() {
     done
     log_success "Copied $rules_count rule files to .claude/rules/ ($rules_skipped skipped)"
 
-    # 4. Create specs/ directory
+    # 4. Copy agents to .claude/agents/
+    mkdir -p "$target/.claude/agents"
+    local agent_count=0
+    for agent in "${PLUGIN_AGENTS[@]}"; do
+        if [[ -f "$PLUGIN_DIR/agents/$agent" ]]; then
+            cp "$PLUGIN_DIR/agents/$agent" "$target/.claude/agents/$agent"
+            agent_count=$((agent_count + 1))
+        else
+            log_warn "Agent file not found: $agent"
+        fi
+    done
+    log_success "Copied $agent_count agent files to .claude/agents/"
+
+    # 5. Create specs/ directory
     mkdir -p "$target/specs"
     log_success "Created specs/ directory"
 
-    # 5. Write version marker
+    # 6. Write version marker
     echo "$version" > "$target/.specify/.version"
     log_success "Wrote version marker: $version"
 
-    # 6. Make bash scripts executable
+    # 7. Make bash scripts executable
     if [[ -d "$target/.specify/scripts/bash" ]]; then
         chmod +x "$target/.specify/scripts/bash/"*.sh
         log_success "Made bash scripts executable"
@@ -153,6 +173,7 @@ do_install() {
     log_info "Installed:"
     log_info "  .specify/           Pipeline config (thesis, constitution, scripts, templates)"
     log_info "  .claude/commands/   ${cmd_count} pipeline commands (/specify, /plan, /implement, ...)"
+    log_info "  .claude/agents/     ${agent_count} agent definitions (research, file-writer, validator)"
     log_info "  .claude/rules/      ${rules_count} process-enforcement rules"
     log_info "  specs/              Feature specification directory"
     log_info ""
@@ -216,11 +237,22 @@ do_update() {
     done
     log_success "Updated $rules_count rule files ($rules_skipped skipped)"
 
-    # 4. Write version marker
+    # 4. Overwrite agents (always — these are plugin-managed)
+    mkdir -p "$target/.claude/agents"
+    local agent_count=0
+    for agent in "${PLUGIN_AGENTS[@]}"; do
+        if [[ -f "$PLUGIN_DIR/agents/$agent" ]]; then
+            cp "$PLUGIN_DIR/agents/$agent" "$target/.claude/agents/$agent"
+            agent_count=$((agent_count + 1))
+        fi
+    done
+    log_success "Updated $agent_count agent files"
+
+    # 5. Write version marker
     echo "$version" > "$target/.specify/.version"
     log_success "Updated version marker: $old_version -> $version"
 
-    # 5. Make bash scripts executable
+    # 6. Make bash scripts executable
     if [[ -d "$target/.specify/scripts/bash" ]]; then
         chmod +x "$target/.specify/scripts/bash/"*.sh
     fi
@@ -267,9 +299,20 @@ do_uninstall() {
     done
     log_success "Removed $rules_count rule files"
 
-    # 4. Clean up empty directories (but don't remove .claude/ if user has other files)
+    # 4. Remove plugin agents (only known files)
+    local agent_count=0
+    for agent in "${PLUGIN_AGENTS[@]}"; do
+        if [[ -f "$target/.claude/agents/$agent" ]]; then
+            rm "$target/.claude/agents/$agent"
+            agent_count=$((agent_count + 1))
+        fi
+    done
+    log_success "Removed $agent_count agent files"
+
+    # 5. Clean up empty directories (but don't remove .claude/ if user has other files)
     rmdir "$target/.claude/commands" 2>/dev/null || true
     rmdir "$target/.claude/rules" 2>/dev/null || true
+    rmdir "$target/.claude/agents" 2>/dev/null || true
     rmdir "$target/.claude" 2>/dev/null || true
 
     # 5. Do NOT remove specs/ — that's user data
